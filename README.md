@@ -58,7 +58,9 @@ flowchart LR
 ### 💡 Her Gün Sorduğum Sorular
 
 > *"Bugün hangi makine planın gerisinde kaldı, neden?"*
+>
 > *"Duruş dakikalarının çoğu hangi iki nedenden geliyor?"*
+>
 > *"Bu hafta litre verimi geçen haftaya göre nerede?"*
 
 ### 🐍 Katkı Grafiğim
@@ -72,7 +74,13 @@ flowchart LR
 ---
 
 <p align="center">
-  <i>Üretimde yapay zekâ ya da veri üzerine konuşmak ister misin? Repolarıma göz at ya da bir issue aç.</i>
+  <i>Üretimde yapay zekâ ya da veri üzerine konuşmak ister misin? Bana LinkedIn'den ulaş.</i>
+</p>
+
+<p align="center">
+  <a href="https://www.linkedin.com/in/serhattergull">
+    <img src="https://img.shields.io/badge/LinkedIn-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn" />
+  </a>
 </p>
 
 <img width="100%" src="https://capsule-render.vercel.app/api?type=waving&color=0:0f2027,50:203a43,100:2c5364&height=110&section=footer" alt="" />

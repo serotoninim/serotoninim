@@ -1,0 +1,175 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 225" width="800" height="225" role="img" aria-label="Verim adlı robot maskot, şişelerin dolup kapaklandığı üretim hattında kalite kontrolü yapıyor">
+  <title>Verim · üretim hattı</title>
+  <style>
+    text { font-family: 'Segoe UI', Verdana, sans-serif; fill: #8b949e; }
+    .lbl { font-size: 11px; font-weight: 700; letter-spacing: 2px; text-anchor: middle; }
+    .cap-txt { font-size: 12px; text-anchor: middle; }
+
+    /* şişeler: 8 sn'de hattı geçer, 6 şişe 1.333 sn arayla */
+    .bottle { animation: move 8s linear infinite; animation-delay: var(--d); }
+    @keyframes move { from { transform: translateX(0); } to { transform: translateX(660px); } }
+
+    .liquid { transform-box: fill-box; transform-origin: bottom; animation: fill 8s linear infinite; animation-delay: var(--d); }
+    @keyframes fill { 0%, 29% { transform: scaleY(0); } 34%, 100% { transform: scaleY(1); } }
+
+    .cap { animation: capon 8s linear infinite; animation-delay: var(--d); }
+    @keyframes capon { 0%, 54% { transform: translateY(-14px); opacity: 0; } 55% { opacity: 1; } 57%, 100% { transform: translateY(0); opacity: 1; } }
+
+    .ok { transform-box: fill-box; transform-origin: center; animation: okon 8s linear infinite; animation-delay: var(--d); }
+    @keyframes okon { 0%, 80% { transform: scale(0); opacity: 0; } 83% { transform: scale(1.3); opacity: 1; } 86%, 100% { transform: scale(1); opacity: 1; } }
+
+    /* istasyonlar, şişe ritmiyle (1.333 sn) senkron */
+    .stream { animation: stream 1.3333s linear infinite; }
+    @keyframes stream { 0%, 3% { opacity: 1; } 4%, 73% { opacity: 0; } 74%, 100% { opacity: 1; } }
+    .press { animation: press 1.3333s ease-in-out infinite; }
+    @keyframes press { 0%, 22% { transform: translateY(0); } 34% { transform: translateY(8px); } 44%, 100% { transform: translateY(0); } }
+    .beam { animation: beam 1.3333s linear infinite; }
+    @keyframes beam { 0%, 68% { opacity: 0; } 80% { opacity: .45; } 94%, 100% { opacity: 0; } }
+
+    .belt { animation: belt .26s linear infinite; }
+    @keyframes belt { to { stroke-dashoffset: -30; } }
+    .spin { transform-box: fill-box; transform-origin: center; animation: spin 1.2s linear infinite; }
+    .spin-r { transform-box: fill-box; transform-origin: center; animation: spin 0.9s linear infinite reverse; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Verim */
+    .bob { animation: bob 2.4s ease-in-out infinite alternate; }
+    @keyframes bob { to { transform: translateY(-3px); } }
+    .eye { transform-box: fill-box; transform-origin: center; animation: blink 4s infinite; }
+    @keyframes blink { 0%, 90%, 100% { transform: scaleY(1); } 94% { transform: scaleY(.1); } }
+    .wave { transform-box: view-box; transform-origin: 726px 156px; animation: wave 4s ease-in-out infinite; }
+    @keyframes wave { 0%, 55%, 100% { transform: rotate(0); } 65% { transform: rotate(-35deg); } 75% { transform: rotate(-5deg); } 85% { transform: rotate(-35deg); } }
+    .glow { animation: glow 1.6s ease-in-out infinite alternate; }
+    @keyframes glow { from { opacity: .45; } to { opacity: 1; } }
+    .spark { transform-box: fill-box; transform-origin: center; animation: spin 3s linear infinite; }
+    .bar { transform-box: fill-box; transform-origin: bottom; animation: grow 2.4s ease-in-out infinite alternate; }
+    .b2 { animation-delay: -.8s; } .b3 { animation-delay: -1.6s; }
+    @keyframes grow { from { transform: scaleY(.35); } to { transform: scaleY(1); } }
+  </style>
+
+  <defs>
+    <linearGradient id="fade" x1="0" x2="1">
+      <stop offset="0" stop-color="#fff" stop-opacity="0"/>
+      <stop offset=".06" stop-color="#fff"/>
+      <stop offset=".94" stop-color="#fff"/>
+      <stop offset="1" stop-color="#fff" stop-opacity="0"/>
+    </linearGradient>
+    <mask id="beltmask"><rect x="20" y="0" width="590" height="225" fill="url(#fade)"/></mask>
+    <filter id="blur" x="-1" y="-1" width="3" height="3"><feGaussianBlur stdDeviation="3"/></filter>
+
+    <g id="btl">
+      <rect x="-12" y="-46" width="24" height="46" rx="6" fill="#36BCF7" fill-opacity=".08" stroke="#36BCF7" stroke-width="1.6"/>
+      <rect x="-5" y="-52" width="10" height="7" fill="#36BCF7" fill-opacity=".08" stroke="#36BCF7" stroke-width="1.4"/>
+      <rect class="liquid" x="-10" y="-42" width="20" height="40" rx="4" fill="#36BCF7" fill-opacity=".85"/>
+      <rect class="cap" x="-6.5" y="-58" width="13" height="6" rx="1.5" fill="#E67E22"/>
+      <g class="ok">
+        <circle cx="0" cy="-22" r="8" fill="#2ea043"/>
+        <path d="M-4 -22 l3 3 l5 -6" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </g>
+    </g>
+  </defs>
+
+  <!-- zemin -->
+  <line x1="10" y1="200" x2="790" y2="200" stroke="#8b949e" stroke-opacity=".35"/>
+
+  <!-- istasyon etiketleri -->
+  <text class="lbl" x="180" y="40">DOLUM</text>
+  <text class="lbl" x="340" y="40">KAPAK</text>
+  <text class="lbl" x="500" y="40">KALİTE</text>
+
+  <!-- dolum istasyonu -->
+  <line x1="180" y1="48" x2="180" y2="70" stroke="#8b949e" stroke-width="2"/>
+  <rect x="162" y="66" width="36" height="28" rx="6" fill="#203a43" stroke="#36BCF7" stroke-width="1.6"/>
+  <rect x="166" y="78" width="28" height="12" rx="3" fill="#36BCF7" fill-opacity=".7"/>
+  <rect x="176" y="94" width="8" height="10" fill="#8b949e"/>
+  <rect class="stream" x="178" y="104" width="4" height="16" rx="2" fill="#36BCF7"/>
+
+  <!-- kapak istasyonu -->
+  <rect x="318" y="46" width="44" height="6" rx="2" fill="#8b949e"/>
+  <g class="press">
+    <rect x="337" y="52" width="6" height="34" fill="#8b949e"/>
+    <rect x="326" y="84" width="28" height="10" rx="3" fill="#E67E22"/>
+  </g>
+
+  <!-- bant -->
+  <rect x="20" y="160" width="590" height="16" rx="8" fill="#2c3e50"/>
+  <line class="belt" x1="28" y1="161" x2="602" y2="161" stroke="#8b949e" stroke-width="2" stroke-dasharray="14 16"/>
+  <g fill="#8b949e">
+    <g class="spin"><circle cx="40" cy="168" r="5"/><rect x="39" y="163" width="2" height="10" fill="#2c3e50"/></g>
+    <g class="spin"><circle cx="150" cy="168" r="5"/><rect x="149" y="163" width="2" height="10" fill="#2c3e50"/></g>
+    <g class="spin"><circle cx="260" cy="168" r="5"/><rect x="259" y="163" width="2" height="10" fill="#2c3e50"/></g>
+    <g class="spin"><circle cx="370" cy="168" r="5"/><rect x="369" y="163" width="2" height="10" fill="#2c3e50"/></g>
+    <g class="spin"><circle cx="480" cy="168" r="5"/><rect x="479" y="163" width="2" height="10" fill="#2c3e50"/></g>
+    <g class="spin"><circle cx="590" cy="168" r="5"/><rect x="589" y="163" width="2" height="10" fill="#2c3e50"/></g>
+  </g>
+  <line x1="40" y1="176" x2="40" y2="200" stroke="#8b949e" stroke-width="3"/>
+  <line x1="590" y1="176" x2="590" y2="200" stroke="#8b949e" stroke-width="3"/>
+
+  <!-- dişliler -->
+  <g class="spin"><circle cx="300" cy="188" r="7" fill="none" stroke="#E67E22" stroke-width="5" stroke-dasharray="3 2.5"/></g>
+  <g class="spin-r"><circle cx="318" cy="186" r="5" fill="none" stroke="#E67E22" stroke-width="4" stroke-dasharray="2.5 2"/></g>
+
+  <!-- şişeler -->
+  <g mask="url(#beltmask)">
+    <g transform="translate(-30 160)">
+      <g class="bottle" style="--d:0s"><use href="#btl"/></g>
+      <g class="bottle" style="--d:-1.3333s"><use href="#btl"/></g>
+      <g class="bottle" style="--d:-2.6667s"><use href="#btl"/></g>
+      <g class="bottle" style="--d:-4s"><use href="#btl"/></g>
+      <g class="bottle" style="--d:-5.3333s"><use href="#btl"/></g>
+      <g class="bottle" style="--d:-6.6667s"><use href="#btl"/></g>
+    </g>
+  </g>
+
+  <!-- tarama ışını -->
+  <polygon class="beam" points="628,140 492,104 492,160" fill="#8A2BE2"/>
+
+  <!-- ===== Verim ===== -->
+  <g class="bob">
+    <!-- anten -->
+    <line x1="690" y1="58" x2="690" y2="38" stroke="#8b949e" stroke-width="3"/>
+    <circle class="glow" cx="690" cy="32" r="11" fill="#8A2BE2" filter="url(#blur)"/>
+    <circle cx="690" cy="32" r="6" fill="#8A2BE2"/>
+    <path class="spark" d="M690 18 l2 5 l5 2 l-5 2 l-2 5 l-2 -5 l-5 -2 l5 -2 z" fill="#f5d0fe"/>
+
+    <!-- baret -->
+    <path d="M652 82 Q652 52 690 52 Q728 52 728 82 Z" fill="#E67E22"/>
+    <rect x="644" y="78" width="92" height="8" rx="4" fill="#d35400"/>
+    <rect x="686" y="55" width="8" height="24" rx="3" fill="#f39c12"/>
+
+    <!-- kafa / ekran -->
+    <rect x="650" y="86" width="80" height="56" rx="16" fill="#0f2027" stroke="#36BCF7" stroke-width="3"/>
+    <rect class="eye" x="666" y="102" width="12" height="18" rx="6" fill="#36BCF7"/>
+    <rect class="eye" x="692" y="102" width="12" height="18" rx="6" fill="#36BCF7"/>
+    <path d="M674 128 Q687 136 700 128" fill="none" stroke="#36BCF7" stroke-width="3" stroke-linecap="round"/>
+    <circle cx="662" cy="126" r="3.5" fill="#E67E22" fill-opacity=".6"/>
+    <circle cx="712" cy="126" r="3.5" fill="#E67E22" fill-opacity=".6"/>
+
+    <!-- boyun ve gövde -->
+    <rect x="682" y="142" width="16" height="6" fill="#8b949e"/>
+    <rect x="656" y="148" width="68" height="40" rx="10" fill="#36BCF7"/>
+    <rect x="666" y="154" width="48" height="28" rx="5" fill="#0f2027"/>
+    <rect class="bar" x="672" y="164" width="9" height="14" rx="1.5" fill="#2ea043"/>
+    <rect class="bar b2" x="686" y="160" width="9" height="18" rx="1.5" fill="#f39c12"/>
+    <rect class="bar b3" x="700" y="157" width="9" height="21" rx="1.5" fill="#8A2BE2"/>
+
+    <!-- sol kol: tarayıcı -->
+    <path d="M658 158 Q640 160 632 146" fill="none" stroke="#36BCF7" stroke-width="7" stroke-linecap="round"/>
+    <rect x="620" y="134" width="16" height="12" rx="3" fill="#8b949e"/>
+    <circle class="glow" cx="622" cy="140" r="3" fill="#8A2BE2"/>
+
+    <!-- sağ kol: el sallama -->
+    <g class="wave">
+      <path d="M722 158 Q744 150 746 128" fill="none" stroke="#36BCF7" stroke-width="7" stroke-linecap="round"/>
+      <circle cx="746" cy="124" r="7" fill="#36BCF7"/>
+    </g>
+
+    <!-- tekerlek -->
+    <rect x="660" y="188" width="60" height="11" rx="5.5" fill="#2c3e50"/>
+    <g class="spin"><circle cx="672" cy="193.5" r="4" fill="#8b949e"/><rect x="671" y="190" width="2" height="7" fill="#2c3e50"/></g>
+    <g class="spin"><circle cx="708" cy="193.5" r="4" fill="#8b949e"/><rect x="707" y="190" width="2" height="7" fill="#2c3e50"/></g>
+  </g>
+
+  <text class="cap-txt" x="690" y="218" font-weight="700" fill="#36BCF7" style="fill:#36BCF7">Verim</text>
+  <text class="cap-txt" x="315" y="218">Doldur · kapakla · yapay zekâ ile kontrol et</text>
+</svg>

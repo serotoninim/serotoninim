@@ -2,7 +2,7 @@
 
 <p align="center">
   <a href="https://github.com/serotoninim">
-    <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=22&duration=3000&pause=800&color=36BCF7&center=true&vCenter=true&width=660&lines=%C3%9Cretim+M%C3%BCd%C3%BCr%C3%BC+Asistan%C4%B1;Yapay+zek%C3%A2+ile+%C3%BCretimi+h%C4%B1zland%C4%B1r%C4%B1yorum;Foto%C4%9Fraftan+rapora%2C+dakikalar+i%C3%A7inde;Veriyi+ke%C5%9Ffedelim+mi%3F" alt="Yazılan animasyon" />
+    <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=22&duration=3000&pause=800&color=36BCF7&center=true&vCenter=true&width=660&lines=%C3%9Cretim+ve+Yapay+Zek%C3%A2;Yapay+zek%C3%A2+ile+%C3%BCretimi+h%C4%B1zland%C4%B1r%C4%B1yorum;Foto%C4%9Fraftan+rapora%2C+dakikalar+i%C3%A7inde;Veriyi+ke%C5%9Ffedelim+mi%3F" alt="Yazılan animasyon" />
   </a>
 </p>
 
@@ -18,12 +18,16 @@
   <img src="https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white" alt="Node.js" />
 </p>
 
+<p align="center">
+  <img width="100%" src="https://raw.githubusercontent.com/serotoninim/serotoninim/main/assets/verim-uretim-hatti.svg" alt="Maskotum Verim, üretim hattında yapay zekâ ile kalite kontrolü yapıyor" />
+</p>
+
 ---
 
 ### 🏭 Hakkımda
 
-- 👷 Üretim Müdürü Asistanı
-- 🤖 Yapay zekâ ile üretim süreçlerini kolaylaştırıyorum
+- 👷 Üretim
+- 🤖 Yapay zekâ projeleri geliştiriyorum
 - 📊 Veri analizi ve raporlama ile ilgileniyorum
 - 🌱 Şu an yapay zekâ destekli raporlama üzerine çalışıyorum
 
@@ -33,7 +37,7 @@
 >
 > *"Duruş dakikalarının çoğu hangi iki nedenden geliyor?"*
 >
-> *"Bu hafta litre verimi geçen haftaya göre nerede?"*
+> *"Nasıl bir adım daha ileri gideriz?"*
 
 ### 🐍 Katkı Grafiğim
 

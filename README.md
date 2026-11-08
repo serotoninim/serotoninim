@@ -1,53 +1,65 @@
-<img width="100%" src="https://capsule-render.vercel.app/api?type=waving&color=0:0f2027,50:203a43,100:2c5364&height=200&section=header&text=Merhaba,%20ben%20Serhat&fontSize=48&fontColor=ffffff&animation=fadeIn&fontAlignY=36&desc=Veri%20Analizi%20%E2%80%A2%20SQL%20%E2%80%A2%20Raporlama&descSize=18&descAlignY=56" alt="Merhaba, ben Serhat" />
+<img width="100%" src="https://capsule-render.vercel.app/api?type=waving&color=0:0f2027,50:203a43,100:2c5364&height=200&section=header&text=Merhaba,%20ben%20Serhat&fontSize=48&fontColor=ffffff&animation=fadeIn&fontAlignY=36&desc=%C3%9Cretim%20%E2%80%A2%20Yapay%20Zek%C3%A2%20%E2%80%A2%20Veri%20Analizi&descSize=18&descAlignY=56" alt="Merhaba, ben Serhat" />
 
 <p align="center">
   <a href="https://github.com/serotoninim">
-    <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=22&duration=3000&pause=800&color=36BCF7&center=true&vCenter=true&width=620&lines=Veriyi+ke%C5%9Ffedelim+mi%3F;SQL+ile+veriden+karar+%C3%BCretiyorum;%C3%9Cretim+raporlar%C4%B1n%C4%B1+otomatikle%C5%9Ftiriyorum;Her+tablo+bir+hikaye+anlat%C4%B1r" alt="Yazılan animasyon" />
+    <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=22&duration=3000&pause=800&color=36BCF7&center=true&vCenter=true&width=660&lines=%C3%9Cretim+M%C3%BCd%C3%BCr%C3%BC+Asistan%C4%B1;Yapay+zek%C3%A2+ile+%C3%BCretimi+h%C4%B1zland%C4%B1r%C4%B1yorum;Foto%C4%9Fraftan+rapora%2C+dakikalar+i%C3%A7inde;Veriyi+ke%C5%9Ffedelim+mi%3F" alt="Yazılan animasyon" />
   </a>
 </p>
 
 <p align="center">
-  Sonuçta hepimiz gündelik hayatımızda birer veri analistiyiz.
+  Sahadaki kâğıdı veriye, veriyi karara çeviriyorum.
 </p>
 
 <p align="center">
+  <img src="https://img.shields.io/badge/Yapay_Zek%C3%A2-8A2BE2?style=for-the-badge" alt="Yapay Zekâ" />
+  <img src="https://img.shields.io/badge/%C3%9Cretim_Analizi-E67E22?style=for-the-badge" alt="Üretim Analizi" />
   <img src="https://img.shields.io/badge/SQL-336791?style=for-the-badge&logo=postgresql&logoColor=white" alt="SQL" />
-  <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black" alt="JavaScript" />
-  <img src="https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white" alt="Node.js" />
   <img src="https://img.shields.io/badge/Excel-217346?style=for-the-badge&logo=microsoftexcel&logoColor=white" alt="Excel" />
+  <img src="https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white" alt="Node.js" />
 </p>
 
 ---
 
-### 🔍 Hakkımda
+### 🏭 Hakkımda
 
-- 📊 Ham veriyi soruya, soruyu karara dönüştürmeyi seviyorum.
-- 🧮 SQL ile müşteri davranışı, satış trendleri ve KPI analizi yapıyorum.
-- 🏭 Üretim tarafında günlük verileri otomatik ve anlaşılır raporlara çeviren araçlar geliştiriyorum.
-- 🌱 Şu an öğrendiklerim: ileri SQL, veri görselleştirme ve raporlama otomasyonu.
+- 👷 **Üretim müdürü asistanıyım.** Vardiya, dolum ve makine verileriyle her gün iç içeyim.
+- 🤖 **Yapay zekâyı sahada kullanıyorum.** El yazısı üretim formlarını okutup tabloya çeviriyor, gün sonu raporlarını otomatikleştiriyorum.
+- 📉 **Kaybın nerede olduğunu buluyorum.** Plan/gerçekleşme, duruş nedenleri ve makine verimi üzerinden.
+- 📊 **Temelim veri analizi.** SQL, KPI ve segmentasyonla veriden hikâye çıkarmayı seviyorum.
+- 🌱 **Şu an üzerinde çalıştıklarım:** Yapay zekâ destekli raporlama ve üretim verisini ERP (Odoo MRP) ile buluşturmak.
+
+### ⚙️ Fotoğraftan Rapora
+
+```mermaid
+flowchart LR
+    A[📷 Üretim formu<br/>fotoğrafı] --> B[🤖 Yapay zekâ<br/>okuma]
+    B --> C[✅ Kontrol &<br/>düzeltme]
+    C --> D[📊 KPI · duruş ·<br/>Pareto analizi]
+    D --> E[📄 A4 PDF<br/>gün sonu raporu]
+```
 
 ### 🧰 Neler Kullanıyorum
 
 | Alan | Araçlar / Teknikler |
 |---|---|
-| **Sorgulama** | SQL · CTE (`WITH`) · Window Functions · alt sorgular |
-| **Analiz** | KPI hesapları · LTV · Recency & Frequency · segmentasyon · Pareto |
-| **Raporlama** | Excel · otomatik PDF raporları · grafikler |
-| **Geliştirme** | JavaScript · Node.js |
+| **Üretim** | Plan/gerçekleşme · duruş analizi · makine verimi · adet & litre · Pareto · trend |
+| **Yapay Zekâ** | Görüntüden veri okuma · otomatik yönetici özeti · yapay zekâ destekli geliştirme |
+| **Veri Analizi** | SQL · CTE (`WITH`) · Window Functions · KPI · LTV · segmentasyon |
+| **Raporlama & Geliştirme** | Excel · otomatik PDF raporları · grafikler · JavaScript · Node.js |
 
 ### 📌 Öne Çıkan Projeler
 
 | Proje | Açıklama |
 |---|---|
-| 🧠 [**sql-data-analytics-project-advanced**](https://github.com/serotoninim/sql-data-analytics-project-advanced) | CTE, window functions, KPI'lar, zaman içindeki değişim ve müşteri/ürün segmentasyonu üzerine kapsamlı SQL analiz koleksiyonu. |
+| 🏭 **Gün Sonu Üretim Raporu** *(yakında)* | Üretim formunun fotoğrafını yapay zekâyla okuyup KPI'lı, duruş analizli, Pareto grafikli A4 PDF gün sonu raporuna çeviren araç. Geçmiş günlerle ve 7 günlük ortalamayla makine bazında kıyas yapar. |
+| 🧠 [**sql-data-analytics-project-advanced**](https://github.com/serotoninim/sql-data-analytics-project-advanced) | CTE, window functions, KPI'lar, zaman içindeki değişim ve segmentasyon üzerine kapsamlı SQL analiz koleksiyonu. |
 | 👟 [**Flo_Sql_Query**](https://github.com/serotoninim/Flo_Sql_Query) | Gerçek bir perakende veri setinde müşteri alışverişleri: kanal ve mağaza tipine göre ciro, kategori ilgisi, en değerli müşteriler. |
-| 🏭 **Gün Sonu Üretim Raporu** *(yakında)* | Üretim formunun fotoğrafından veya Excel'den KPI'lı, duruş analizli, Pareto grafikli A4 PDF gün sonu raporu üreten araç. |
 
-### 💡 Sevdiğim Sorular
+### 💡 Her Gün Sorduğum Sorular
 
-> *"Ciroyu en çok hangi müşteri grubu taşıyor?"*
-> *"Bu hafta plan neden tutmadı, kayıp nerede?"*
-> *"Trend gerçekten yukarı mı, yoksa mevsimsel mi?"*
+> *"Bugün hangi makine planın gerisinde kaldı, neden?"*
+> *"Duruş dakikalarının çoğu hangi iki nedenden geliyor?"*
+> *"Bu hafta litre verimi geçen haftaya göre nerede?"*
 
 ### 🐍 Katkı Grafiğim
 
@@ -60,7 +72,7 @@
 ---
 
 <p align="center">
-  <i>Bir veri sorunun mu var? Repolarıma göz at ya da bir issue aç, konuşalım.</i>
+  <i>Üretimde yapay zekâ ya da veri üzerine konuşmak ister misin? Repolarıma göz at ya da bir issue aç.</i>
 </p>
 
 <img width="100%" src="https://capsule-render.vercel.app/api?type=waving&color=0:0f2027,50:203a43,100:2c5364&height=110&section=footer" alt="" />

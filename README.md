@@ -19,7 +19,7 @@
 </p>
 
 <p align="center">
-  <img width="100%" src="https://raw.githubusercontent.com/serotoninim/serotoninim/main/assets/verim-uretim-hatti.svg" alt="Maskotum Verim, üretim hattında yapay zekâ ile kalite kontrolü yapıyor" />
+  <img width="100%" src="https://raw.githubusercontent.com/serotoninim/serotoninim/main/assets/uretim-hatti.svg" alt="Maskotum Serhatonin, üretim hattında yapay zekâ ile kalite kontrolü yapıyor" />
 </p>
 
 ---

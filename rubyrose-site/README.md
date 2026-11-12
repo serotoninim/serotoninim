@@ -16,3 +16,7 @@ cd rubyrose-site && python3 -m http.server 8000
 Notlar:
 - İletişim formunun arka ucu yok; istemci tarafında doğrulanır ve `mailto:` ile e-posta taslağı hazırlar.
 - Tüm sayısal ve kurumsal bilgiler firmanın kendi sitesinden ve kamuya açık kayıtlardan alınmıştır; sertifika iddiası yapılmamıştır.
+
+v2 ("Pigment"):
+- `assets/js/src/main.js` (davranış, i18n, form) ve `assets/js/src/fx.js` (WebGL pigment shader, imleç izi, renk geçişi, mercek, damla, pipet, harita) okunabilir kaynaklardır; sayfa küçültülmüş `assets/js/main.js` ve `assets/js/fx.js` dosyalarını yükler. Değişiklikten sonra: `npx terser assets/js/src/fx.js -c -m -o assets/js/fx.js` (main.js için de aynısı).
+- WebGL yoksa veya `prefers-reduced-motion` etkinse hero statik CSS degrade + fotoğrafa döner.

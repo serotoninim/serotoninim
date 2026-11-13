@@ -18,7 +18,7 @@
   const attrPairs = el => el.dataset.i18nAttr.split(';').map(p => p.split(':'));
   $$('[data-i18n-attr]').forEach(el => attrPairs(el).forEach(([a, k]) => { FR[k] = el.getAttribute(a); }));
   DICT.fr = Object.assign({}, DICT.fr || {}, FR);
-  const LANGS = ['fr', 'en', 'pt'];
+  const LANGS = ['fr', 'en', 'pt', 'tr'];
   let lang = 'fr';
   const t = k => (DICT[lang] && DICT[lang][k] != null ? DICT[lang][k] : (DICT.fr[k] != null ? DICT.fr[k] : k));
   const store = { get() { try { return localStorage.getItem('rr-lang'); } catch (e) { return null; } },
@@ -38,6 +38,7 @@
     splitAll(true);
     formatCounters();
     if (shade) shade.relabel();
+    if (pcat) pcat.relabel();
     syncBurger();
     emit('rr:lang', lang);
   }
@@ -180,7 +181,7 @@
 
   /* ---------- odometer counters ---------- */
   const counters = $$('.odo');
-  const fmt = n => new Intl.NumberFormat(lang === 'en' ? 'en-US' : lang === 'pt' ? 'pt-BR' : 'fr-FR').format(n);
+  const fmt = n => new Intl.NumberFormat({ en: 'en-US', pt: 'pt-BR', tr: 'tr-TR' }[lang] || 'fr-FR').format(n);
   function buildOdo(el, start) {
     const str = fmt(+el.dataset.count);
     el.textContent = '';
@@ -315,34 +316,52 @@
     W.addEventListener('pointerup', () => { if (drag) { drag = null; vp.classList.remove('is-drag'); } });
   }
 
-  /* ---------- shade explorer (liquid drop) ---------- */
+  /* ---------- shade explorer: real Classic packshots + swatches (assets/img/classic/manifest.json, inlined) ---------- */
   const hex = h => [1, 3, 5].map(i => parseInt(h.slice(i, i + 2), 16));
-  const toHex = a => '#' + a.map(v => clamp(Math.round(v), 0, 255).toString(16).padStart(2, '0')).join('');
-  function ramp(stops, n, tone) {
-    const out = [], s = stops.map(hex);
-    for (let i = 0; i < n; i++) {
-      const p = n === 1 ? 0 : i / (n - 1) * (s.length - 1), k = Math.min(Math.floor(p), s.length - 2), f = p - k;
-      let c = s[k].map((v, j) => v + (s[k + 1][j] - v) * f);
-      if (tone) { const u = i % 3; c = u === 0 ? [c[0] + 3, c[1] - 3, c[2] + 5] : u === 2 ? [c[0] + 4, c[1] + 2, c[2] - 7] : c; }
-      out.push(toHex(c));
-    }
-    return out;
-  }
   const lum = h => { const c = hex(h).map(v => { v /= 255; return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4); }); return 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2]; };
-  const SKIN = ['#F7E2D0', '#F1D1B8', '#EAC2A2', '#E0B08C', '#D49E78', '#C68C66', '#B67A55', '#A26846', '#8C573A', '#764830', '#603A27', '#4B2D1F', '#382219'];
-  const PRODUCTS = {
-    daily: { n: 33, code: i => 'L' + (i + 1), form: 'liquid', colors: ramp(SKIN, 33, true), def: 4 },
-    blur: { n: 25, code: i => 'L' + (i + 1), form: 'liquid', colors: ramp(['#F8E6D6', '#F0D2B9', '#E6BE9C', '#D8A982', '#C8936B', '#B37C56', '#9A6544', '#7E5035', '#603C28', '#462C1E'], 25, true), def: 4 },
-    light: { n: 5, code: i => 'P' + (i + 1), form: 'compact', colors: ramp(['#F2DDCB', '#E2C1A2', '#CDA27F', '#B08060', '#875C42'], 5), def: 4 },
-    blush: { n: 18, code: i => 'N°' + String(i + 1).padStart(2, '0'), form: 'compact', colors: ramp(['#E8B9A9', '#EFA48E', '#F28E76', '#EF7A6E', '#E7687C', '#D8577E', '#BF436C', '#A8304F', '#8E1E33'], 18), def: 3 }
+  const slug = s => s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+  const SH = {
+    daily: ['daily-skin', 'L5|L10|L15|L20|L25|L30|L35|L40|L45|M50|M55|M60|M65|M70|M75|M80|M85|M90|M95|MD100|MD105|MD110|MD115|MD120|MD125|MD130|MD135|MD140|D145|D150|D155|D165|D170', 'fee3bbfac7acf5bfa0ecb394fcc187f9be90ecbd99e5a67ee6b78ee7a477ecb085dda281f9c6a5eeab79edaf7fe6ab83e4a578d59d75c88150c87f4ccc8650b67142d07f4dc86e35a166458f5c439661429c6b4f5c39229d6f57997161845440836860', 11, 'liquid'],
+    blur: ['blur-me', 'L5|L10|L15|L20|L25|L35|L40|L45|L50|L55|M60|M70|M75|M80|M85|M90|MD95|MD100|MD105|MD110|MD115|MD120|MD125|MD130', 'e5c1aedeb09ae6ae95e0a781ecb897e9b79bd2a989dda580ddb090e0a07fde9d7bc78d70e3a27acca28cc9a287d5a783b67a57d79b76ca8f66b17e6788523575452b78442c7d462a', 5, 'liquid'],
+    light: ['light-filter', 'P5|P10|P15|P20|P25', 'f7c9a9eab895cf8e70c5875fd38451', 2, 'compact'],
+    blush: ['blush-on-me', 'Coral Charm|Mauve Memory|Nude Shyness|Inner Flame|Peach Panic|Moody Rose|Sweet Flush|Bare Emotion|Warm Crush|Red Denial|Dusty Love|Blush Fever|Sienna Sigh|Pink Thrill|Terracota Tension|Quiet Cherry|First Fire|Rosy Feeling', 'e27e6aa46c4dd37875d17a59e1555efa9bafd28362b77555ee8075b8605bd47153bf7366b36c4cde576e704530d44f52d9736efc7287', 0, 'compact']
   };
+  const PRODUCTS = {};
+  Object.keys(SH).forEach(k => { const s = SH[k], names = s[1].split('|'); PRODUCTS[k] = { pre: s[0], names, n: names.length, colors: names.map((_, i) => '#' + s[2].substr(i * 6, 6)), def: s[3], form: s[4] }; });
+  const NOSMEAR = { 'light-filter-p5': 1 };
   const section = $('#classic');
   let shade = null;
   if (section) {
     const codeEl = $('#stage-code'), posEl = $('#stage-pos');
     const tabs = $$('.tab', section), panel = $('#cl-panel'), current = {};
-    let active = 'daily';
-    const pad = n => String(n).padStart(2, '0');
+    const packs = $$('.stage__pack img', section), smear = $('.stage__smear', section), smImg = smear && $('img', smear);
+    let active = 'daily', pk = 0, want = '';
+    const file = (P, i) => 'assets/img/classic/' + P.pre + '-' + slug(P.names[i]);
+    const ready = (img, cb) => { if (img.complete && img.naturalWidth) cb(); else { img.onload = cb; img.onerror = cb; } };
+    function showShade(P, idx, silent) {
+      const base = file(P, idx), src = base + '-p.webp';
+      want = src;
+      if (packs.length === 2) {
+        const cur = packs[pk], nx = packs[1 - pk];
+        if (silent || RM) { cur.src = src; }
+        else if (!cur.src.endsWith(src)) {
+          nx.loading = 'eager'; nx.src = src;
+          ready(nx, () => {
+            if (want !== src) return;
+            nx.classList.remove('is-out'); cur.classList.remove('is-on'); cur.classList.add('is-out');
+            void nx.offsetWidth; nx.classList.add('is-on'); pk = 1 - pk;
+          });
+        }
+      }
+      if (smear) {
+        const none = NOSMEAR[P.pre + '-' + slug(P.names[idx])];
+        smear.dataset.kind = none ? 'hex' : P.form;
+        if (!none) { smImg.loading = 'eager'; smImg.src = base + '-s.webp'; }
+        if (!silent && !RM) { smear.classList.remove('is-wipe'); void smear.offsetWidth; smear.classList.add('is-wipe'); }
+      }
+      /* warm the neighbours so arrow-key browsing feels instant */
+      if (!silent) [idx - 1, idx + 1].forEach(j => { if (j >= 0 && j < P.n) (new Image()).src = file(P, j) + '-p.webp'; });
+    }
     function pick(pid, idx, focus, silent) {
       const P = PRODUCTS[pid], group = $(`[data-shades="${pid}"]`, section);
       current[pid] = idx;
@@ -356,8 +375,9 @@
       const col = P.colors[idx];
       section.style.setProperty('--shade', col);
       section.style.setProperty('--on-shade', lum(col) > 0.3 ? '#140A0F' : '#FBF6F2');
-      codeEl.textContent = P.code(idx);
-      posEl.textContent = pad(idx + 1) + ' / ' + pad(P.n);
+      codeEl.textContent = P.names[idx];
+      posEl.textContent = col.toUpperCase();
+      showShade(P, idx, silent);
       const nm = $(`.prod[data-p="${pid}"] .prod__name`, section);
       if (nm && !RM && !silent) { nm.classList.remove('is-smearing'); void nm.offsetWidth; nm.classList.add('is-smearing'); }
       emit('rr:shade', { color: col, silent: !!silent });
@@ -369,9 +389,10 @@
       P.colors.forEach((c, i) => {
         const b = d.createElement('button');
         b.type = 'button'; b.className = 'chip'; b.setAttribute('role', 'radio');
-        b.style.setProperty('--c', c); b.dataset.code = P.code(i); b.dataset.cursor = 'pick';
+        b.style.setProperty('--c', c); b.dataset.cursor = 'pick';
         b.style.setProperty('--a', (P.n === 1 ? 0 : -total / 2 + i * total / (P.n - 1)).toFixed(2) + 'deg');
         b.addEventListener('click', () => pick(pid, i));
+        b.addEventListener('pointerenter', () => { (new Image()).src = file(P, i) + '-p.webp'; }, { once: true });
         group.appendChild(b);
       });
       group.addEventListener('keydown', e => {
@@ -409,15 +430,93 @@
       relabel() {
         Object.keys(PRODUCTS).forEach(pid => {
           const P = PRODUCTS[pid], group = $(`[data-shades="${pid}"]`, section);
-          group.setAttribute('aria-label', t('cl.shadesOf') + ' ' + $(`.prod[data-p="${pid}"] .prod__name`, section).textContent);
-          $$('.chip', group).forEach((c, i) => c.setAttribute('aria-label', t('cl.shade') + ' ' + P.code(i) + ' — ' + (i + 1) + '/' + P.n));
+          group.setAttribute('aria-label', t('cl.shadesOf').replace('{p}', $(`.prod[data-p="${pid}"] .prod__nm`, section).textContent));
+          $$('.chip', group).forEach((c, i) => c.setAttribute('aria-label', t('cl.shade') + ' ' + P.names[i]));
         });
       }
     };
-    Object.keys(PRODUCTS).forEach(pid => { current[pid] = PRODUCTS[pid].def; });
     selectProduct('daily', false, true);
     Object.keys(PRODUCTS).forEach(pid => pick(pid, current[pid], false, true));
     shade.relabel();
+  }
+
+  /* ---------- product constellation: category tabs, label card, family strip ---------- */
+  const pcs = $('#produits');
+  let pcat = null;
+  if (pcs) {
+    const stage = $('.pc-stage', pcs), ptabs = $$('.pct', pcs), sets = $$('.pc-set', pcs);
+    const card = $('#pc-card'), cc = ['cat', 'nm', 'desc', 'tag'].map(k => $('#pc-card-' + k));
+    let cat = 'face', act = null, seenOnce = false;
+    const wideQ = W.matchMedia('(min-width: 761px)');
+    const link = $('.pc-link', stage), word = $('#pc-word');
+    function place() {
+      if (!act || !link) return;
+      if (!wideQ.matches) { link.style.opacity = 0; return; }
+      const s = stage.getBoundingClientRect(), c = card.getBoundingClientRect(), r = $('.pc', act).getBoundingClientRect();
+      const x1 = c.right - s.left, y1 = c.top + c.height / 2 - s.top, x2 = r.left + r.width / 2 - s.left, y2 = r.top + r.height * 0.42 - s.top;
+      const len = Math.hypot(x2 - x1, y2 - y1);
+      link.style.opacity = 1;
+      link.style.width = len.toFixed(0) + 'px';
+      link.style.transform = 'translate3d(' + x1.toFixed(1) + 'px,' + y1.toFixed(1) + 'px,0) rotate(' + Math.atan2(y2 - y1, x2 - x1).toFixed(4) + 'rad)';
+    }
+    W.RR.pcLink = place;
+    function show(btn) {
+      if (!btn) return;
+      act = btn;
+      $$('.pp', stage).forEach(b => b.classList.toggle('is-act', b === btn));
+      const fr = btn.hasAttribute('data-classic');
+      cc[0].textContent = t('pc.cat.' + cat);
+      if (word) word.textContent = t('pc.cat.' + cat);
+      cc[1].textContent = $('.pp__nm', btn).textContent;
+      cc[2].innerHTML = t(btn.dataset.desc);
+      cc[3].textContent = t(fr ? 'pc.tag.fr' : 'pc.tag.pf');
+      card.classList.toggle('is-fr', fr);
+      card.classList.remove('is-pop'); void card.offsetWidth; card.classList.add('is-pop');
+      place();
+    }
+    function setCat(c, focus) {
+      cat = c;
+      ptabs.forEach(tb => {
+        const on = tb.dataset.cat === c;
+        tb.setAttribute('aria-selected', String(on)); tb.tabIndex = on ? 0 : -1;
+        if (on && focus) tb.focus();
+      });
+      stage.setAttribute('aria-labelledby', 'pct-' + c);
+      stage.dataset.cat = c;
+      let set = null;
+      sets.forEach(s => { const on = s.dataset.set === c; s.hidden = !on; s.classList.remove('is-in'); if (on) set = s; });
+      $$('img', set).forEach(i => { i.loading = 'eager'; });
+      const go = () => { set.classList.add('is-in'); show($('.pp', set)); };
+      if (RM || seenOnce) requestAnimationFrame(() => requestAnimationFrame(go)); else show($('.pp', set));
+      emit('rr:pcat', c);
+    }
+    ptabs.forEach((tb, i) => {
+      tb.addEventListener('click', () => { if (tb.dataset.cat !== cat) setCat(tb.dataset.cat); });
+      tb.addEventListener('keydown', e => {
+        let j = null;
+        if (e.key === 'ArrowRight') j = (i + 1) % ptabs.length; else if (e.key === 'ArrowLeft') j = (i - 1 + ptabs.length) % ptabs.length;
+        else if (e.key === 'Home') j = 0; else if (e.key === 'End') j = ptabs.length - 1;
+        if (j !== null) { e.preventDefault(); setCat(ptabs[j].dataset.cat, true); }
+      });
+    });
+    stage.addEventListener('pointerover', e => { const b = e.target.closest('.pp'); if (b && b !== act) show(b); });
+    stage.addEventListener('focusin', e => { const b = e.target.closest('.pp'); if (b) show(b); });
+    stage.addEventListener('click', e => { const b = e.target.closest('.pp'); if (b) show(b); });
+    $$('[data-go]', pcs).forEach(b => b.addEventListener('click', () => {
+      setCat(b.dataset.go);
+      const r = stage.getBoundingClientRect();
+      if (r.top < 0 || r.top > W.innerHeight * 0.5) stage.scrollIntoView({ behavior: RM ? 'auto' : 'smooth', block: 'center' });
+    }));
+    const first = () => {
+      if (seenOnce) return; seenOnce = true;
+      const s = sets.find(x => !x.hidden); s.classList.add('is-in'); place();
+      setTimeout(() => $$('.pc-set img', pcs).forEach(i => { i.loading = 'eager'; }), 1800);
+    };
+    if (RM || !('IntersectionObserver' in W)) first();
+    else new IntersectionObserver((es, o) => es.forEach(en => { if (en.isIntersecting) { first(); o.disconnect(); } }), { rootMargin: '0px 0px -25% 0px' }).observe(stage);
+    W.addEventListener('resize', place);
+    pcat = { relabel() { show(act); } };
+    show($('.pp', sets[0]));
   }
 
   /* ---------- contact form (no backend yet: validates, then prepares a mailto) ---------- */

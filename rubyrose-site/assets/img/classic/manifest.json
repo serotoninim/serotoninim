@@ -1,0 +1,490 @@
+{
+"daily-skin": [
+{
+"name": "L5",
+"hex": "#fee3bb",
+"p": "daily-skin-l5-p.webp",
+"s": "daily-skin-l5-s.webp"
+},
+{
+"name": "L10",
+"hex": "#fac7ac",
+"p": "daily-skin-l10-p.webp",
+"s": "daily-skin-l10-s.webp"
+},
+{
+"name": "L15",
+"hex": "#f5bfa0",
+"p": "daily-skin-l15-p.webp",
+"s": "daily-skin-l15-s.webp"
+},
+{
+"name": "L20",
+"hex": "#ecb394",
+"p": "daily-skin-l20-p.webp",
+"s": "daily-skin-l20-s.webp"
+},
+{
+"name": "L25",
+"hex": "#fcc187",
+"p": "daily-skin-l25-p.webp",
+"s": "daily-skin-l25-s.webp"
+},
+{
+"name": "L30",
+"hex": "#f9be90",
+"p": "daily-skin-l30-p.webp",
+"s": "daily-skin-l30-s.webp"
+},
+{
+"name": "L35",
+"hex": "#ecbd99",
+"p": "daily-skin-l35-p.webp",
+"s": "daily-skin-l35-s.webp"
+},
+{
+"name": "L40",
+"hex": "#e5a67e",
+"p": "daily-skin-l40-p.webp",
+"s": "daily-skin-l40-s.webp"
+},
+{
+"name": "L45",
+"hex": "#e6b78e",
+"p": "daily-skin-l45-p.webp",
+"s": "daily-skin-l45-s.webp"
+},
+{
+"name": "M50",
+"hex": "#e7a477",
+"p": "daily-skin-m50-p.webp",
+"s": "daily-skin-m50-s.webp"
+},
+{
+"name": "M55",
+"hex": "#ecb085",
+"p": "daily-skin-m55-p.webp",
+"s": "daily-skin-m55-s.webp"
+},
+{
+"name": "M60",
+"hex": "#dda281",
+"p": "daily-skin-m60-p.webp",
+"s": "daily-skin-m60-s.webp"
+},
+{
+"name": "M65",
+"hex": "#f9c6a5",
+"p": "daily-skin-m65-p.webp",
+"s": "daily-skin-m65-s.webp"
+},
+{
+"name": "M70",
+"hex": "#eeab79",
+"p": "daily-skin-m70-p.webp",
+"s": "daily-skin-m70-s.webp"
+},
+{
+"name": "M75",
+"hex": "#edaf7f",
+"p": "daily-skin-m75-p.webp",
+"s": "daily-skin-m75-s.webp"
+},
+{
+"name": "M80",
+"hex": "#e6ab83",
+"p": "daily-skin-m80-p.webp",
+"s": "daily-skin-m80-s.webp"
+},
+{
+"name": "M85",
+"hex": "#e4a578",
+"p": "daily-skin-m85-p.webp",
+"s": "daily-skin-m85-s.webp"
+},
+{
+"name": "M90",
+"hex": "#d59d75",
+"p": "daily-skin-m90-p.webp",
+"s": "daily-skin-m90-s.webp"
+},
+{
+"name": "M95",
+"hex": "#c88150",
+"p": "daily-skin-m95-p.webp",
+"s": "daily-skin-m95-s.webp"
+},
+{
+"name": "MD100",
+"hex": "#c87f4c",
+"p": "daily-skin-md100-p.webp",
+"s": "daily-skin-md100-s.webp"
+},
+{
+"name": "MD105",
+"hex": "#cc8650",
+"p": "daily-skin-md105-p.webp",
+"s": "daily-skin-md105-s.webp"
+},
+{
+"name": "MD110",
+"hex": "#b67142",
+"p": "daily-skin-md110-p.webp",
+"s": "daily-skin-md110-s.webp"
+},
+{
+"name": "MD115",
+"hex": "#d07f4d",
+"p": "daily-skin-md115-p.webp",
+"s": "daily-skin-md115-s.webp"
+},
+{
+"name": "MD120",
+"hex": "#c86e35",
+"p": "daily-skin-md120-p.webp",
+"s": "daily-skin-md120-s.webp"
+},
+{
+"name": "MD125",
+"hex": "#a16645",
+"p": "daily-skin-md125-p.webp",
+"s": "daily-skin-md125-s.webp"
+},
+{
+"name": "MD130",
+"hex": "#8f5c43",
+"p": "daily-skin-md130-p.webp",
+"s": "daily-skin-md130-s.webp"
+},
+{
+"name": "MD135",
+"hex": "#966142",
+"p": "daily-skin-md135-p.webp",
+"s": "daily-skin-md135-s.webp"
+},
+{
+"name": "MD140",
+"hex": "#9c6b4f",
+"p": "daily-skin-md140-p.webp",
+"s": "daily-skin-md140-s.webp"
+},
+{
+"name": "D145",
+"hex": "#5c3922",
+"p": "daily-skin-d145-p.webp",
+"s": "daily-skin-d145-s.webp"
+},
+{
+"name": "D150",
+"hex": "#9d6f57",
+"p": "daily-skin-d150-p.webp",
+"s": "daily-skin-d150-s.webp"
+},
+{
+"name": "D155",
+"hex": "#997161",
+"p": "daily-skin-d155-p.webp",
+"s": "daily-skin-d155-s.webp"
+},
+{
+"name": "D165",
+"hex": "#845440",
+"p": "daily-skin-d165-p.webp",
+"s": "daily-skin-d165-s.webp"
+},
+{
+"name": "D170",
+"hex": "#836860",
+"p": "daily-skin-d170-p.webp",
+"s": "daily-skin-d170-s.webp"
+}
+],
+"blur-me": [
+{
+"name": "L5",
+"hex": "#e5c1ae",
+"p": "blur-me-l5-p.webp",
+"s": "blur-me-l5-s.webp"
+},
+{
+"name": "L10",
+"hex": "#deb09a",
+"p": "blur-me-l10-p.webp",
+"s": "blur-me-l10-s.webp"
+},
+{
+"name": "L15",
+"hex": "#e6ae95",
+"p": "blur-me-l15-p.webp",
+"s": "blur-me-l15-s.webp"
+},
+{
+"name": "L20",
+"hex": "#e0a781",
+"p": "blur-me-l20-p.webp",
+"s": "blur-me-l20-s.webp"
+},
+{
+"name": "L25",
+"hex": "#ecb897",
+"p": "blur-me-l25-p.webp",
+"s": "blur-me-l25-s.webp"
+},
+{
+"name": "L35",
+"hex": "#e9b79b",
+"p": "blur-me-l35-p.webp",
+"s": "blur-me-l35-s.webp"
+},
+{
+"name": "L40",
+"hex": "#d2a989",
+"p": "blur-me-l40-p.webp",
+"s": "blur-me-l40-s.webp"
+},
+{
+"name": "L45",
+"hex": "#dda580",
+"p": "blur-me-l45-p.webp",
+"s": "blur-me-l45-s.webp"
+},
+{
+"name": "L50",
+"hex": "#ddb090",
+"p": "blur-me-l50-p.webp",
+"s": "blur-me-l50-s.webp"
+},
+{
+"name": "L55",
+"hex": "#e0a07f",
+"p": "blur-me-l55-p.webp",
+"s": "blur-me-l55-s.webp"
+},
+{
+"name": "M60",
+"hex": "#de9d7b",
+"p": "blur-me-m60-p.webp",
+"s": "blur-me-m60-s.webp"
+},
+{
+"name": "M70",
+"hex": "#c78d70",
+"p": "blur-me-m70-p.webp",
+"s": "blur-me-m70-s.webp"
+},
+{
+"name": "M75",
+"hex": "#e3a27a",
+"p": "blur-me-m75-p.webp",
+"s": "blur-me-m75-s.webp"
+},
+{
+"name": "M80",
+"hex": "#cca28c",
+"p": "blur-me-m80-p.webp",
+"s": "blur-me-m80-s.webp"
+},
+{
+"name": "M85",
+"hex": "#c9a287",
+"p": "blur-me-m85-p.webp",
+"s": "blur-me-m85-s.webp"
+},
+{
+"name": "M90",
+"hex": "#d5a783",
+"p": "blur-me-m90-p.webp",
+"s": "blur-me-m90-s.webp"
+},
+{
+"name": "MD95",
+"hex": "#b67a57",
+"p": "blur-me-md95-p.webp",
+"s": "blur-me-md95-s.webp"
+},
+{
+"name": "MD100",
+"hex": "#d79b76",
+"p": "blur-me-md100-p.webp",
+"s": "blur-me-md100-s.webp"
+},
+{
+"name": "MD105",
+"hex": "#ca8f66",
+"p": "blur-me-md105-p.webp",
+"s": "blur-me-md105-s.webp"
+},
+{
+"name": "MD110",
+"hex": "#b17e67",
+"p": "blur-me-md110-p.webp",
+"s": "blur-me-md110-s.webp"
+},
+{
+"name": "MD115",
+"hex": "#885235",
+"p": "blur-me-md115-p.webp",
+"s": "blur-me-md115-s.webp"
+},
+{
+"name": "MD120",
+"hex": "#75452b",
+"p": "blur-me-md120-p.webp",
+"s": "blur-me-md120-s.webp"
+},
+{
+"name": "MD125",
+"hex": "#78442c",
+"p": "blur-me-md125-p.webp",
+"s": "blur-me-md125-s.webp"
+},
+{
+"name": "MD130",
+"hex": "#7d462a",
+"p": "blur-me-md130-p.webp",
+"s": "blur-me-md130-s.webp"
+}
+],
+"light-filter": [
+{
+"name": "P5",
+"hex": "#f7c9a9",
+"p": "light-filter-p5-p.webp",
+"s": null
+},
+{
+"name": "P10",
+"hex": "#eab895",
+"p": "light-filter-p10-p.webp",
+"s": "light-filter-p10-s.webp"
+},
+{
+"name": "P15",
+"hex": "#cf8e70",
+"p": "light-filter-p15-p.webp",
+"s": "light-filter-p15-s.webp"
+},
+{
+"name": "P20",
+"hex": "#c5875f",
+"p": "light-filter-p20-p.webp",
+"s": "light-filter-p20-s.webp"
+},
+{
+"name": "P25",
+"hex": "#d38451",
+"p": "light-filter-p25-p.webp",
+"s": "light-filter-p25-s.webp"
+}
+],
+"blush-on-me": [
+{
+"name": "Coral Charm",
+"hex": "#e27e6a",
+"p": "blush-on-me-coral-charm-p.webp",
+"s": "blush-on-me-coral-charm-s.webp"
+},
+{
+"name": "Mauve Memory",
+"hex": "#a46c4d",
+"p": "blush-on-me-mauve-memory-p.webp",
+"s": "blush-on-me-mauve-memory-s.webp"
+},
+{
+"name": "Nude Shyness",
+"hex": "#d37875",
+"p": "blush-on-me-nude-shyness-p.webp",
+"s": "blush-on-me-nude-shyness-s.webp"
+},
+{
+"name": "Inner Flame",
+"hex": "#d17a59",
+"p": "blush-on-me-inner-flame-p.webp",
+"s": "blush-on-me-inner-flame-s.webp"
+},
+{
+"name": "Peach Panic",
+"hex": "#e1555e",
+"p": "blush-on-me-peach-panic-p.webp",
+"s": "blush-on-me-peach-panic-s.webp"
+},
+{
+"name": "Moody Rose",
+"hex": "#fa9baf",
+"p": "blush-on-me-moody-rose-p.webp",
+"s": "blush-on-me-moody-rose-s.webp"
+},
+{
+"name": "Sweet Flush",
+"hex": "#d28362",
+"p": "blush-on-me-sweet-flush-p.webp",
+"s": "blush-on-me-sweet-flush-s.webp"
+},
+{
+"name": "Bare Emotion",
+"hex": "#b77555",
+"p": "blush-on-me-bare-emotion-p.webp",
+"s": "blush-on-me-bare-emotion-s.webp"
+},
+{
+"name": "Warm Crush",
+"hex": "#ee8075",
+"p": "blush-on-me-warm-crush-p.webp",
+"s": "blush-on-me-warm-crush-s.webp"
+},
+{
+"name": "Red Denial",
+"hex": "#b8605b",
+"p": "blush-on-me-red-denial-p.webp",
+"s": "blush-on-me-red-denial-s.webp"
+},
+{
+"name": "Dusty Love",
+"hex": "#d47153",
+"p": "blush-on-me-dusty-love-p.webp",
+"s": "blush-on-me-dusty-love-s.webp"
+},
+{
+"name": "Blush Fever",
+"hex": "#bf7366",
+"p": "blush-on-me-blush-fever-p.webp",
+"s": "blush-on-me-blush-fever-s.webp"
+},
+{
+"name": "Sienna Sigh",
+"hex": "#b36c4c",
+"p": "blush-on-me-sienna-sigh-p.webp",
+"s": "blush-on-me-sienna-sigh-s.webp"
+},
+{
+"name": "Pink Thrill",
+"hex": "#de576e",
+"p": "blush-on-me-pink-thrill-p.webp",
+"s": "blush-on-me-pink-thrill-s.webp"
+},
+{
+"name": "Terracota Tension",
+"hex": "#704530",
+"p": "blush-on-me-terracota-tension-p.webp",
+"s": "blush-on-me-terracota-tension-s.webp"
+},
+{
+"name": "Quiet Cherry",
+"hex": "#d44f52",
+"p": "blush-on-me-quiet-cherry-p.webp",
+"s": "blush-on-me-quiet-cherry-s.webp"
+},
+{
+"name": "First Fire",
+"hex": "#d9736e",
+"p": "blush-on-me-first-fire-p.webp",
+"s": "blush-on-me-first-fire-s.webp"
+},
+{
+"name": "Rosy Feeling",
+"hex": "#fc7287",
+"p": "blush-on-me-rosy-feeling-p.webp",
+"s": "blush-on-me-rosy-feeling-s.webp"
+}
+]
+}

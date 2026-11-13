@@ -1,4 +1,4 @@
-/* Ruby Rose France — fx layer: pigment shader, cursor trail, palette morph, lens, liquid drop, pipette, map, kinetic type */
+/* Ruby Rose France — fx layer: pigment shader, product orbit, pigment pour, constellation, cursor trail, palette morph, lens, liquid drop, pipette, map, kinetic type */
 (() => {
   'use strict';
   const d = document, root = d.documentElement, W = window;
@@ -105,7 +105,7 @@ precision highp float;
 #else
 precision mediump float;
 #endif
-uniform vec2 uR,uM,uS;uniform float uT,uV,uB,uHI,uPt;uniform vec4 uRect;uniform sampler2D uI;
+uniform vec2 uR,uM;uniform float uT,uV,uB;
 vec2 hh(vec2 p){p=vec2(dot(p,vec2(127.1,311.7)),dot(p,vec2(269.5,183.3)));return fract(sin(p)*43758.5453)*2.-1.;}
 float gn(vec2 p){vec2 i=floor(p),f=fract(p),u=f*f*(3.-2.*f);return mix(mix(dot(hh(i),f),dot(hh(i+vec2(1.,0.)),f-vec2(1.,0.)),u.x),mix(dot(hh(i+vec2(0.,1.)),f-vec2(0.,1.)),dot(hh(i+1.),f-1.),u.x),u.y);}
 float fbm(vec2 p){float s=0.,a=.5;mat2 m=mat2(1.6,1.2,-1.2,1.6);for(int i=0;i<5;i++){s+=a*gn(p);p=m*p;a*=.5;}return s;}
@@ -128,13 +128,7 @@ float vein=abs(fract(v*5.+ln*1.6)-.5);col+=go*smoothstep(.03,0.,vein)*.22*smooth
 vec3 n=normalize(vec3(-vec2(dFdx(v),dFdy(v))*uR.y*.2,1.));
 col+=pow(max(dot(n,normalize(vec3(-.5,.6,.62))),0.),26.)*.42*vec3(1.,.93,.95)*smoothstep(.15,.6,v);
 #endif
-vec2 lp=(uv-uRect.xy)/uRect.zw;
-vec2 tv=clamp((lp-.5)*uS+.5+(r+q*.5)*.03*(1.+k*4.),0.,1.);
-vec3 ph=texture2D(uI,tv).rgb;float L=dot(ph,vec3(.299,.587,.114));
-vec3 gr=mix(nt,rb,smoothstep(.03,.5,L));gr=mix(gr,bl,smoothstep(.6,.98,L));ph=mix(ph,gr,.38);
-float e=uPt>.5?lp.y:lp.x;
-float mk=smoothstep(0.,.45,e+(v-.5)*.85)*(1.-smoothstep(.8,1.,v)*.45)*uHI;
-col=mix(col,ph,mk*.94);
+col*=mix(.55,1.,smoothstep(.0,.62,uv.x+uv.y*.15));
 col*=1.-.32*smoothstep(.55,1.25,length((uv-.5)*vec2(as,1.)));
 float R=(1.-uB)*1.35*max(as,1.);
 col+=mix(ro,bl,.4)*exp(-abs(bd-R)*12.)*uB*1.6;
@@ -151,30 +145,17 @@ gl_FragColor=vec4(col,1.);}`;
     const buf = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, buf);
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
     const loc = gl.getAttribLocation(pr, 'a'); gl.enableVertexAttribArray(loc); gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
-    const U = {}; ['uR', 'uM', 'uS', 'uT', 'uV', 'uB', 'uHI', 'uPt', 'uRect', 'uI'].forEach(n => { U[n] = gl.getUniformLocation(pr, n); });
-    const tex = gl.createTexture(); gl.bindTexture(gl.TEXTURE_2D, tex);
-    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, 1, 1, 0, gl.RGB, gl.UNSIGNED_BYTE, new Uint8Array([60, 10, 25]));
-    [[gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE], [gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE], [gl.TEXTURE_MIN_FILTER, gl.LINEAR], [gl.TEXTURE_MAG_FILTER, gl.LINEAR]].forEach(([a, b]) => gl.texParameteri(gl.TEXTURE_2D, a, b));
-    gl.uniform1i(U.uI, 0);
-    let hasImg = 0, ia = 1800 / 2248;
-    const img = new Image();
-    img.onload = () => { gl.bindTexture(gl.TEXTURE_2D, tex); gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true); gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, img); ia = img.naturalWidth / img.naturalHeight; hasImg = 1; size(); };
-    img.src = ($('.hero__photo img') || {}).currentSrc || 'assets/img/product-gloss-red.webp';
-    let w = 0, h = 0, portrait = false;
+    const U = {}; ['uR', 'uM', 'uT', 'uV', 'uB'].forEach(n => { U[n] = gl.getUniformLocation(pr, n); });
+    let w = 0, h = 0;
     function size() {
       const r = hero.getBoundingClientRect(), sc = (W.innerWidth < 760 ? 0.55 : 0.5) * DPR;
       w = Math.max(2, Math.round(r.width * sc)); h = Math.max(2, Math.round(r.height * sc));
       if (cv.width !== w || cv.height !== h) { cv.width = w; cv.height = h; }
       gl.viewport(0, 0, w, h);
-      portrait = r.width / r.height < 0.9;
-      const rect = portrait ? [0, 0.36, 1, 0.64] : [0.34, 0, 0.66, 1];
-      const ra = (rect[2] * r.width) / (rect[3] * r.height);
-      gl.uniform4f(U.uRect, rect[0], rect[1], rect[2], rect[3]);
-      gl.uniform2f(U.uS, ra > ia ? 1 : ra / ia, ra > ia ? ia / ra : 1);
-      gl.uniform2f(U.uR, w, h); gl.uniform1f(U.uPt, portrait ? 1 : 0);
+      gl.uniform2f(U.uR, w, h);
     }
     size(); W.addEventListener('resize', size);
-    const m = { x: 0.62, y: 0.55, tx: 0.62, ty: 0.55, v: 0, act: 0 };
+    const m = { x: 0.7, y: 0.5, tx: 0.7, ty: 0.5, v: 0, act: 0 };
     hero.addEventListener('pointermove', e => { const r = hero.getBoundingClientRect(); m.tx = (e.clientX - r.left) / r.width; m.ty = 1 - (e.clientY - r.top) / r.height; m.act = performance.now(); });
     let B = 1, b0 = 0, first = true, vis = true;
     const start = () => { if (!b0) b0 = performance.now(); };
@@ -183,18 +164,128 @@ gl_FragColor=vec4(col,1.);}`;
     const T0 = performance.now();
     function draw(now) {
       if (!vis) return;
-      if (now - m.act > 2500) { const t = now * 0.00025; m.tx = 0.6 + 0.22 * Math.sin(t * 1.3); m.ty = 0.5 + 0.22 * Math.cos(t); }
+      if (now - m.act > 2500) { const t = now * 0.00025; m.tx = 0.68 + 0.18 * Math.sin(t * 1.3); m.ty = 0.48 + 0.2 * Math.cos(t); }
       const px = m.x, py = m.y;
       m.x = lerp(m.x, m.tx, 0.045); m.y = lerp(m.y, m.ty, 0.045);
       m.v = lerp(m.v, Math.hypot(m.x - px, m.y - py), 0.2);
       if (b0) { const p = clamp((now - b0) / 1900, 0, 1); B = Math.pow(1 - p, 2.2); }
       gl.uniform1f(U.uT, (now - T0) / 1000 + 12); gl.uniform2f(U.uM, m.x, m.y); gl.uniform1f(U.uV, m.v);
-      gl.uniform1f(U.uB, B); gl.uniform1f(U.uHI, hasImg);
+      gl.uniform1f(U.uB, B);
       gl.drawArrays(gl.TRIANGLES, 0, 3);
       if (first) { first = false; root.classList.add('has-gl'); }
     }
     seen(hero, v => { vis = v; if (v) on(draw); else off(draw); }, '0px');
     on(draw);
+  })();
+
+
+  /* ---------- 1b · hero: product cut-outs in a slow orbit (depth parallax, contact shadows, light sweeps) ---------- */
+  const orbit = $('.orbit');
+  if (orbit && hero) (() => {
+    const its = $$('.po', orbit).map((el, i, a) => ({ el, sh: $('.po__sh', el), img: $('img', el), a0: i / a.length * 6.2832 + 0.35, w: 0, h: 0, dk: -1 }));
+    const g = { w: 0, h: 0, cx: 0, cy: 0, rx: 0, ry: 0 };
+    const p = { x: 0, y: 0, tx: 0, ty: 0, act: 0 };
+    function meas() {
+      const r = hero.getBoundingClientRect(), mob = r.width < 760;
+      g.w = r.width; g.h = r.height;
+      g.cx = r.width * (mob ? 0.5 : 0.735); g.cy = r.height * (mob ? 0.3 : 0.53);
+      g.rx = mob ? r.width * 0.34 : Math.min(r.width * 0.19, 370); g.ry = r.height * (mob ? 0.045 : 0.075);
+      orbit.style.setProperty('--cx', g.cx.toFixed(0) + 'px'); orbit.style.setProperty('--cy', g.cy.toFixed(0) + 'px');
+      orbit.style.setProperty('--rx', g.rx.toFixed(0) + 'px'); orbit.style.setProperty('--ry', g.ry.toFixed(0) + 'px');
+      its.forEach(it => { it.w = it.el.offsetWidth; it.h = it.el.offsetHeight; });
+    }
+    hero.addEventListener('pointermove', e => { if (e.pointerType !== 'mouse') return; const r = hero.getBoundingClientRect(); p.tx = (e.clientX - r.left) / r.width * 2 - 1; p.ty = (e.clientY - r.top) / r.height * 2 - 1; p.act = performance.now(); });
+    const T0 = performance.now() - 9000;
+    function pose(now) {
+      const t = (now - T0) / 1000;
+      if (now - p.act > 2500) { p.tx = 0.5 * Math.sin(t * 0.21); p.ty = 0.35 * Math.cos(t * 0.17); } /* touch / idle: gentle drift, no gyroscope */
+      p.x = lerp(p.x, p.tx, 0.05); p.y = lerp(p.y, p.ty, 0.05);
+      its.forEach((it, i) => {
+        if (!it.w) return;
+        const a = it.a0 + t * 0.085, z = Math.sin(a), dz = (z + 1) / 2;
+        const bob = Math.sin(t * 0.8 + i * 1.7) * g.h * 0.012;
+        const sc = 0.6 + 0.46 * dz;
+        const x = g.cx + Math.cos(a) * g.rx + p.x * (8 + dz * 40), y = g.cy + z * g.ry + bob + p.y * (5 + dz * 24);
+        const rot = -Math.cos(a) * 7 + Math.sin(t * 0.5 + i) * 2.5;
+        it.el.style.transform = 'translate3d(' + (x - it.w / 2).toFixed(1) + 'px,' + (y - it.h / 2).toFixed(1) + 'px,0) scale(' + sc.toFixed(3) + ') rotate(' + rot.toFixed(2) + 'deg)';
+        it.el.style.zIndex = 2 + Math.round(dz * 10);
+        const dk = Math.round((0.5 + 0.5 * dz) * 50) / 50;
+        if (dk !== it.dk) { it.dk = dk; it.el.style.setProperty('--dk', dk); }
+        /* contact shadow: slides against the pointer, tightens when the product bobs down */
+        it.sh.style.transform = 'translate3d(' + (-p.x * (10 + dz * 30) - rot * 1.5).toFixed(1) + 'px,' + (-bob * 0.4).toFixed(1) + 'px,0) scale(' + (1 + bob / g.h * 6).toFixed(3) + ',1)';
+      });
+    }
+    const go = () => { meas(); pose(performance.now()); orbit.classList.add('is-on'); };
+    if (d.readyState === 'complete') go(); else W.addEventListener('load', go);
+    $$('img', orbit).forEach(i => { if (!i.complete) i.addEventListener('load', () => { meas(); if (RM) pose(performance.now()); }); });
+    W.addEventListener('resize', () => { meas(); if (RM) pose(performance.now()); });
+    if (RM) return;
+    seen(hero, v => v ? on(pose) : off(pose), '0px');
+  })();
+
+  /* ---------- 1c · pigment pour: viscous liquid edge between the hero and the next section ---------- */
+  const pour = $('.pour');
+  if (pour && hero) (() => {
+    const ps = $$('path', pour), N = 40, CR = [[260, 120, 30], [700, 160, 46], [1180, 110, 34]];
+    const line = (lv, j, t, p) => {
+      const pts = [];
+      for (let i = 0; i <= N; i++) {
+        const x = i / N * 1440;
+        let y = 200 - lv - (Math.sin(x * 0.0042 + t * (0.45 + j * 0.12) + j * 1.9) * 12 + Math.sin(x * 0.011 - t * 0.6 + j) * 6) * (1 + p * 1.5);
+        CR.forEach((c, k) => { y -= (24 + p * 70) * (1 - j * 0.22) * Math.exp(-Math.pow((x - c[0] - j * 40 - Math.sin(t * 0.3 + k) * 30) / (c[2] + p * 40), 2)) * (0.6 + 0.4 * Math.sin(t * 0.7 + k * 2)); });
+        pts.push([x, y]);
+      }
+      let dd = 'M' + pts[0][0] + ' ' + pts[0][1].toFixed(1);
+      for (let i = 1; i < pts.length; i++) { const a = pts[i - 1], b = pts[i]; dd += 'Q' + a[0].toFixed(0) + ' ' + a[1].toFixed(1) + ' ' + ((a[0] + b[0]) / 2).toFixed(0) + ' ' + ((a[1] + b[1]) / 2).toFixed(1); }
+      return dd + 'L1440 ' + pts[N][1].toFixed(1);
+    };
+    function draw(now) {
+      const t = RM ? 0 : now / 1000, p = clamp(W.scrollY / (hero.offsetHeight * 0.85), 0, 1);
+      [64, 44, 26].forEach((lv, j) => { const l = line(lv + p * (60 + j * 28), j, t, p); ps[j].setAttribute('d', l + 'V200H0Z'); if (j === 2) ps[3].setAttribute('d', l); });
+    }
+    draw(0);
+    if (RM) return;
+    seen(hero, v => v ? on(draw) : off(draw), '0px');
+  })();
+
+  /* ---------- 13 · product constellation: 3-depth parallax, auto-drift, mascara lash stroke ---------- */
+  const pst = $('.pc-stage');
+  if (pst) (() => {
+    const m = { x: 0, y: 0, tx: 0, ty: 0, act: 0 };
+    const lid = $('.pc-lash .lid', pst), lashes = $$('.pc-lash .lash', pst), wand = $('.pc-lash .wand', pst);
+    let LL = 0;
+    if (lid && lid.getTotalLength) {
+      LL = lid.getTotalLength();
+      lid.style.strokeDasharray = LL + ' ' + LL;
+      lashes.forEach((l, k) => {
+        const u = 0.06 + k * 0.088, a = lid.getPointAtLength(u * LL), b = lid.getPointAtLength(Math.min(LL, u * LL + 2));
+        const tx = (b.x - a.x) / 2, ty = (b.y - a.y) / 2, nx = ty, ny = -tx, len = 40 + 26 * Math.sin(u * Math.PI);
+        const side = (u - 0.5) * 1.6;
+        l.setAttribute('d', 'M' + a.x.toFixed(1) + ' ' + a.y.toFixed(1) + 'Q' + (a.x + nx * len * 0.55 + side * 14).toFixed(1) + ' ' + (a.y + ny * len * 0.55).toFixed(1) + ' ' + (a.x + nx * len + side * 34 + 10).toFixed(1) + ' ' + (a.y + ny * len - 6).toFixed(1));
+        l.dataset.u = u;
+      });
+    }
+    function lash(now) {
+      if (!LL) return;
+      const T = (now % 5200) / 1000, u = clamp(T / 2.3, 0, 1), e = u < 1 ? 1 - Math.pow(1 - u, 2) : 1, fade = T > 4.2 ? clamp(1 - (T - 4.2) / 0.8, 0, 1) : 1;
+      lid.style.strokeDashoffset = (LL * (1 - e)).toFixed(1);
+      pst.style.setProperty('--lf', fade.toFixed(2));
+      lashes.forEach(l => l.classList.toggle('is-on', e >= +l.dataset.u));
+      const pt = lid.getPointAtLength(e * LL), p2 = lid.getPointAtLength(Math.min(LL, e * LL + 1));
+      wand.setAttribute('transform', 'translate(' + pt.x.toFixed(1) + ' ' + pt.y.toFixed(1) + ') rotate(' + (Math.atan2(p2.y - pt.y, p2.x - pt.x) * 57.3).toFixed(1) + ')');
+      wand.style.opacity = (u < 1 ? 1 : clamp(1 - (T - 2.3) * 2, 0, 1)).toFixed(2);
+    }
+    if (RM) { if (LL) { lid.style.strokeDashoffset = 0; lashes.forEach(l => l.classList.add('is-on')); wand.style.opacity = 0; } return; }
+    pst.addEventListener('pointermove', e => { if (e.pointerType !== 'mouse') return; const r = pst.getBoundingClientRect(); m.tx = (e.clientX - r.left) / r.width * 2 - 1; m.ty = (e.clientY - r.top) / r.height * 2 - 1; m.act = performance.now(); });
+    pst.addEventListener('pointerleave', () => { m.act = 0; });
+    function run(now) {
+      if (now - m.act > 2200) { m.tx = 0.55 * Math.sin(now * 0.00035); m.ty = 0.35 * Math.cos(now * 0.00027); }
+      m.x = lerp(m.x, m.tx, 0.07); m.y = lerp(m.y, m.ty, 0.07);
+      pst.style.setProperty('--px', m.x.toFixed(3)); pst.style.setProperty('--py', m.y.toFixed(3));
+      if (pst.dataset.cat === 'eyes') lash(now);
+      if (W.RR && W.RR.pcLink) W.RR.pcLink();
+    }
+    seen(pst, v => v ? on(run) : off(run));
   })();
 
   /* ---------- 2 · cursor + pigment trail (pointer:fine, desktop) ---------- */

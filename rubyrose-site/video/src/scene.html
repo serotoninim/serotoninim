@@ -1,0 +1,769 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=1080,height=1920">
+<title>Ruby Rose France — story 9:16</title>
+<link rel="stylesheet" href="fonts.css">
+<style>
+:root{
+  --night:#140A0F;--plum:#4A1631;--ruby:#B8123F;--rose:#EA5174;--blush:#F7D9DF;--ivory:#FBF6F2;--gold:#D9B072;--hl:#F17C98;
+  --serif:"Instrument Serif","Times New Roman",Georgia,serif;
+  --sans:Montserrat,"Helvetica Neue",Arial,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+*,*::before,*::after{box-sizing:border-box;transition:none!important;animation:none!important}
+html,body{margin:0;width:1080px;height:1920px;overflow:hidden;background:var(--night)}
+body{color:var(--ivory);font:400 28px/1.4 var(--sans);-webkit-font-smoothing:antialiased;text-rendering:geometricPrecision}
+#stage{position:relative;width:1080px;height:1920px;overflow:hidden;background:var(--night);isolation:isolate}
+#gl{position:absolute;left:0;top:0;width:1080px;height:1920px;display:block}
+.layer{position:absolute;inset:0;pointer-events:none}
+.abs{position:absolute;left:0;top:0;transform-origin:50% 50%}
+.c{translate:-50% -50%}
+.lc{translate:0 -50%}
+.rt{translate:-100% 0}
+.ct{translate:-50% 0}
+.serif{font-family:var(--serif);font-weight:400;letter-spacing:-.02em}
+.serif em,.em{font-style:italic;color:var(--hl)}
+.mono{font-family:var(--mono);font-weight:500;text-transform:uppercase;letter-spacing:.22em;font-size:22px;line-height:1.4}
+.sans-up{font-family:var(--sans);font-weight:600;text-transform:uppercase;letter-spacing:.2em;font-size:28px;line-height:1.3}
+.nowrap{white-space:nowrap}
+.ln{display:block;overflow:clip;overflow-clip-margin:.08em;padding:0 .12em .16em 0;margin:0 0 -.16em 0;white-space:nowrap}
+.li{display:inline-block;transform-origin:0 100%;will-change:transform}
+/* products */
+.prod{will-change:transform,opacity}
+.prod .clip{position:absolute;inset:0;overflow:hidden}
+.prod img{position:absolute;top:0;display:block;max-width:none}
+.prod .sheen{position:absolute;top:0;display:block;background:linear-gradient(104deg,rgba(255,244,238,0) 0%,rgba(255,244,238,0) 40%,rgba(255,244,238,.78) 50%,rgba(255,244,238,0) 60%,rgba(255,244,238,0) 100%);background-size:260% 100%;background-repeat:no-repeat;mix-blend-mode:screen;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;opacity:0}
+.prod .csh{position:absolute;left:50%;bottom:-2.5%;width:96%;height:7%;translate:-50% 0;background:radial-gradient(closest-side,rgba(6,2,4,.62),rgba(6,2,4,0));}
+.dark .prod{filter:drop-shadow(0 34px 38px rgba(6,2,4,.55))}
+.light .prod{filter:drop-shadow(0 26px 30px rgba(52,10,28,.50))}
+.light .prod .csh{background:radial-gradient(closest-side,rgba(74,22,49,.38),rgba(74,22,49,0))}
+.chip{position:absolute;left:0;top:0;border-radius:50%;translate:-50% -50%;box-shadow:inset -6px -8px 14px rgba(0,0,0,.22),inset 5px 6px 10px rgba(255,255,255,.28),0 6px 14px rgba(0,0,0,.35)}
+.hair{position:absolute;height:1px;background:rgba(251,246,242,.35);transform-origin:0 50%}
+.hair.gold{background:var(--gold)}
+.dot{position:absolute;width:12px;height:12px;border-radius:50%;background:var(--gold);translate:-50% -50%;box-shadow:0 0 18px rgba(217,176,114,.8)}
+#grain{position:absolute;inset:0;width:1080px;height:1920px;mix-blend-mode:overlay;opacity:.06;pointer-events:none;image-rendering:auto}
+#vig{position:absolute;inset:0;background:radial-gradient(130% 90% at 50% 46%,rgba(20,10,15,0) 55%,rgba(20,10,15,.55) 100%);pointer-events:none}
+#fade{position:absolute;inset:0;background:var(--night);opacity:0;pointer-events:none}
+.odo{display:inline-block;height:1em;overflow:hidden;vertical-align:top;line-height:1em}
+.odo i{display:block;font-style:normal;line-height:1em;height:1em;will-change:transform}
+.odo i b{display:block;height:1em;font-weight:400}
+.eyebrow{display:flex;align-items:center;gap:20px;color:var(--rose)}
+.eyebrow .bar{display:inline-block;width:56px;height:1px;background:var(--gold)}
+</style>
+</head>
+<body>
+<div id="stage">
+  <canvas id="gl" width="720" height="1280"></canvas>
+  <div id="L" class="layer"></div>
+  <div id="vig"></div>
+  <div id="chrome" class="layer"></div>
+  <canvas id="grain" width="540" height="960"></canvas>
+  <div id="fade"></div>
+</div>
+<script>
+'use strict';
+/* =========================================================
+   Ruby Rose France — 9:16 story. Deterministic: every pixel
+   is a pure function of the seek time t (window.__seek(t)).
+   ========================================================= */
+const Q = new URLSearchParams(location.search);
+const LANG = (Q.get('lang') || window.__LANG || 'fr') === 'tr' ? 'tr' : 'fr';
+document.documentElement.lang = LANG;
+const DUR = 25;
+const IMG = '../../assets/img/';
+/* shade manifest of the Classic range (name + hex per shade), read synchronously so the build is deterministic */
+window.__MAN = (() => { const x = new XMLHttpRequest(); x.open('GET', IMG + 'classic/manifest.json', false); x.send(); return JSON.parse(x.responseText); })();
+
+/* ---------- copy (FR default, TR second version; all strings taken from the site) ---------- */
+const COPY = {
+  fr: {
+    badge: '#FormuléEnFrance · Laboratoire R&D · Sèvres · ',
+    lab: ['Laboratoire', 'de formulation', '<em>cosmétique</em>'],
+    place: 'Sèvres <span style="color:var(--gold)">·</span> Paris',
+    tag: 'Formulé en France',
+    eb: ['Le laboratoire', 'Teint', 'Joues', 'Lèvres', 'Yeux', 'Ruby Rose en chiffres'],
+    teintN: 'teintes', daily: 'Fond de teint Daily Skin',
+    cp: 'Correcteur <span class="em" style="color:var(--gold)">·</span> Poudre', cpSub: 'Blur Me · Light Filter',
+    blushSub: 'Blush On Me',
+    lips: 'Gloss <span class="em" style="color:var(--ruby)">·</span> Rouge à lèvres',
+    lumenSub: 'Lumen · Gloss à lèvres de la ligne Wonder', moodSub: 'Mood · Rouge à lèvres liquide',
+    eyes: 'Mascara', eyesSub: 'Volume &amp; courbe',
+    figs: ['pays de distribution', 'références maquillage', 'produits vendus chaque année'],
+    claim: ['La <em>French Touch</em>', 'pour de nouveaux', 'horizons de beauté'],
+  },
+  tr: {
+    badge: '#FormuléEnFrance · Ar-Ge laboratuvarı · Sèvres · ',
+    lab: ['Kozmetik', 'formülasyon', '<em>laboratuvarı</em>'],
+    place: 'Sèvres <span style="color:var(--gold)">·</span> Paris',
+    tag: 'Fransa’da formüle edildi',
+    eb: ['Laboratuvar', 'Ten', 'Yanaklar', 'Dudaklar', 'Gözler', 'Rakamlarla Ruby Rose'],
+    teintN: 'ton', daily: '<span lang="en">Daily Skin</span> fondöten',
+    cp: 'Kapatıcı <span class="em" style="color:var(--gold)">·</span> Pudra', cpSub: 'Blur Me · Light Filter',
+    blushSub: 'Blush On Me',
+    lips: 'Gloss <span class="em" style="color:var(--ruby)">·</span> Ruj',
+    lumenSub: '<span lang="en">Lumen · Wonder</span> serisinden dudak parlatıcısı', moodSub: '<span lang="en">Mood</span> · Likit ruj',
+    eyes: 'Maskara', eyesSub: 'Hacim ve kıvrım',
+    figs: ['ülkede dağıtım', 'makyaj referansı', 'ürün her yıl satılıyor'],
+    claim: ['Yeni güzellik', 'ufukları için', '<em>Fransız</em> dokunuşu'],
+  }
+}[LANG];
+
+/* ---------- tiny deterministic toolkit ---------- */
+const stage = document.getElementById('stage'), L = document.getElementById('L'), CH = document.getElementById('chrome');
+const E = (tag, cls, par, html) => { const e = document.createElement(tag); if (cls) e.className = cls; if (html != null) e.innerHTML = html; (par || L).appendChild(e); return e; };
+const cl = (x, a = 0, b = 1) => x < a ? a : x > b ? b : x;
+const pr = (t, a, b) => cl((t - a) / (b - a));
+const mix = (a, b, k) => a + (b - a) * k;
+const eo3 = k => 1 - Math.pow(1 - k, 3), eo5 = k => 1 - Math.pow(1 - k, 5);
+const eexp = k => k >= 1 ? 1 : 1 - Math.pow(2, -10 * k);
+const ei3 = k => k * k * k, ei2 = k => k * k;
+const eio = k => k < .5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2;
+const eback = k => { const c1 = 1.25, c3 = c1 + 1; return 1 + c3 * Math.pow(k - 1, 3) + c1 * Math.pow(k - 1, 2); };
+/* window factor: rises over [a,a+fi], falls over [b-fo,b] */
+const win = (t, a, b, fi = .3, fo = .3) => Math.min(pr(t, a, a + fi), 1 - pr(t, b - fo, b));
+function T(el, x, y, s = 1, r = 0, o = 1, f) {
+  el.style.transform = 'translate(' + x.toFixed(2) + 'px,' + y.toFixed(2) + 'px) rotate(' + r.toFixed(3) + 'deg) scale(' + (+s).toFixed(4) + ')';
+  el.style.opacity = o.toFixed(4);
+  el.style.visibility = o <= 0.002 ? 'hidden' : 'visible';
+  if (f !== undefined) el.style.filter = f;
+}
+function show(el, o) { el.style.opacity = o.toFixed(4); el.style.visibility = o <= 0.002 ? 'hidden' : 'visible'; }
+/* seeded PRNG (mulberry32) for any "random" layout */
+function rng(seed) { return () => { seed |= 0; seed = seed + 0x6D2B79F5 | 0; let t = Math.imul(seed ^ seed >>> 15, 1 | seed); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+
+/* text helpers: masked lines (site .w/.wi reveal) and fit-to-width */
+function lines(par, cls, arr, style) {
+  const b = E('div', 'abs ' + cls, par); if (style) b.style.cssText += style;
+  b._li = arr.map(h => { const ln = E('span', 'ln', b); return E('span', 'li', ln, h); });
+  return b;
+}
+function revealLines(b, t, t0, stag = .08, dur = .62, tOut = null, outDur = .3) {
+  b._li.forEach((li, i) => {
+    const k = eo5(pr(t, t0 + i * stag, t0 + i * stag + dur));
+    let y = (1 - k) * 140, r = (1 - k) * 4;
+    if (tOut != null) { const ko = ei3(pr(t, tOut + i * .04, tOut + i * .04 + outDur)); y -= ko * 140; }
+    li.style.transform = 'translateY(' + y.toFixed(2) + '%) rotate(' + r.toFixed(3) + 'deg)';
+  });
+}
+const FITS = [];
+function fit(el, maxW) { FITS.push([el, maxW]); return el; }
+function runFits() {
+  FITS.forEach(([el, maxW]) => {
+    const cs = getComputedStyle(el); let fs = parseFloat(cs.fontSize);
+    const prevT = el.style.transform; el.style.transform = 'none';
+    const meas = () => { let w = 0; const kids = el.querySelectorAll('.li'); if (kids.length) kids.forEach(k => { w = Math.max(w, k.getBoundingClientRect().width); }); else w = el.getBoundingClientRect().width; return w; };
+    let guard = 0;
+    while (meas() > maxW && guard++ < 60) { fs *= .97; el.style.fontSize = fs.toFixed(2) + 'px'; }
+    el.style.transform = prevT;
+  });
+}
+
+/* product cut-outs: soft drop shadow, contact shadow, masked light sweep */
+const NAT = {
+  'blush-on-me-pink-thrill': [791, 794], 'concealer-blur-me-l35': [213, 892], 'concealer-blur-me-md100': [213, 893],
+  'foundation-daily-skin-d150': [313, 906], 'foundation-daily-skin-l20': [314, 906], 'foundation-daily-skin-m60': [313, 906],
+  'gloss-lumen-clear': [439, 760], 'gloss-lumen-glorious': [417, 760], 'gloss-lumen-lux': [416, 745], 'gloss-lumen-shining': [422, 750], 'gloss-lumen-star': [428, 760],
+  'highlighter-baked-glowing-rules': [649, 743], 'lipstick-mood-desire': [355, 946], 'lipstick-mood-romance': [351, 955], 'lipstick-mood-wish': [353, 945],
+  'mascara-cat-eye': [156, 904], 'mascara-curve-volume': [156, 909], 'mascara-epic-lashes': [183, 902], 'mascara-feels-stunning': [183, 902],
+  'mascara-glass': [551, 938], 'mascara-length-definition': [156, 909], 'mascara-tropico-power-volume': [139, 976],
+  'powder-baked-filter-pb60': [845, 914], 'powder-glass-gpd20': [679, 888], 'powder-light-filter-p25': [543, 667], 'powder-light-filter-p5': [543, 667],
+};
+const IMGS = [];
+function prod(par, name, h, o = {}) {
+  const [nw, nh] = NAT[name], sc = h / nh, crop = (o.crop || 0) * sc, iw = nw * sc;
+  const w = iw - crop;
+  const el = E('div', 'abs c prod', par); el.style.width = w.toFixed(1) + 'px'; el.style.height = h + 'px';
+  if (o.csh !== false) E('i', 'csh', el);
+  const clip = E('div', 'clip', el);
+  const src = IMG + 'products/' + name + '.webp';
+  const im = E('img', '', clip); im.src = src; im.style.width = iw.toFixed(1) + 'px'; im.style.height = h + 'px'; im.style.left = (-crop).toFixed(1) + 'px';
+  IMGS.push(im);
+  if (o.backing) { const bk = E('img', '', clip); bk.src = src; IMGS.push(bk); bk.style.cssText += `width:${iw.toFixed(1)}px;height:${h}px;left:${(-crop).toFixed(1)}px;filter:brightness(0) invert(1);opacity:${o.backing}`; clip.insertBefore(bk, im); }
+  const sh = E('i', 'sheen', clip);
+  sh.style.left = (-crop).toFixed(1) + 'px'; sh.style.width = iw.toFixed(1) + 'px'; sh.style.height = h + 'px';
+  sh.style.webkitMaskImage = sh.style.maskImage = 'url(' + src + ')';
+  sh.style.webkitMaskSize = sh.style.maskSize = iw.toFixed(1) + 'px ' + h + 'px';
+  return { el, w, h, sweep(k, a = 1) { sh.style.backgroundPosition = mix(118, -18, k).toFixed(2) + '% 0'; sh.style.opacity = (k > 0 && k < 1 ? a : 0).toFixed(3); } };
+}
+function img(par, path, w, cls = 'abs c') { const i = E('img', cls, par); i.src = IMG + path; i.style.width = w + 'px'; IMGS.push(i); return i; }
+
+/* =========================================================
+   BACKGROUND · liquid pigment (fbm domain warp from the site's hero shader)
+   ========================================================= */
+const GL = (() => {
+  const cv = document.getElementById('gl');
+  const gl = cv.getContext('webgl', { antialias: false, alpha: false, depth: false, preserveDrawingBuffer: true });
+  gl.getExtension('OES_standard_derivatives');
+  const FS = `#extension GL_OES_standard_derivatives : enable
+precision highp float;
+uniform vec2 uR,uC;uniform float uT,uAmt,uB,uRing,uSw,uVein,uSpec,uVig,uSeed;
+uniform vec3 c0,c1,c2,c3,c4;
+vec2 hh(vec2 p){p=vec2(dot(p,vec2(127.1,311.7)),dot(p,vec2(269.5,183.3)));return fract(sin(p)*43758.5453)*2.-1.;}
+float gn(vec2 p){vec2 i=floor(p),f=fract(p),u=f*f*(3.-2.*f);return mix(mix(dot(hh(i),f),dot(hh(i+vec2(1.,0.)),f-vec2(1.,0.)),u.x),mix(dot(hh(i+vec2(0.,1.)),f-vec2(0.,1.)),dot(hh(i+1.),f-1.),u.x),u.y);}
+float fbm(vec2 p){float s=0.,a=.5;mat2 m=mat2(1.6,1.2,-1.2,1.6);for(int i=0;i<5;i++){s+=a*gn(p);p=m*p;a*=.5;}return s;}
+void main(){
+vec2 uv=gl_FragCoord.xy/uR;float as=uR.x/uR.y;
+vec2 p=vec2(uv.x*as,uv.y);vec2 cc=vec2(uC.x*as,uC.y);vec2 d=p-cc;float dl=length(d);
+float k=exp(-dl*dl*5.);float an=k*uSw;float cs=cos(an),sn=sin(an);
+p=cc+mat2(cs,sn,-sn,cs)*d*(1.-k*.12*min(uSw,3.)/3.);
+float t=uT*.085;vec2 P=p*1.55+vec2(uSeed,uSeed*.37);
+vec2 q=vec2(fbm(P+vec2(0.,t)),fbm(P+vec2(5.2,1.3)-t*.8));
+vec2 r=vec2(fbm(P+3.2*q+vec2(1.7,9.2)+t*1.3),fbm(P+3.2*q+vec2(8.3,2.8)-t));
+float v=clamp(fbm(P+3.4*r)*1.3+.5,0.,1.);
+vec3 col=mix(c0,c1,smoothstep(.05,.38,v));col=mix(col,c2,smoothstep(.36,.62,v));col=mix(col,c3,smoothstep(.62,.86,v));col=mix(col,c4,smoothstep(.87,1.,v)*.65);
+float ln=length(r);col=mix(col,c0,smoothstep(.5,.95,ln)*.4);
+float vein=abs(fract(v*5.+ln*1.6)-.5);col+=vec3(.851,.69,.447)*smoothstep(.035,0.,vein)*uVein*smoothstep(.3,.8,v);
+vec2 X=P+3.4*r;float e=1.55/uR.y;float v0=fbm(X);
+vec3 n=normalize(vec3(-vec2(fbm(X+vec2(e,0.))-v0,fbm(X+vec2(0.,e))-v0)*1.3*uR.y*.2,1.));
+col+=pow(max(dot(n,normalize(vec3(-.5,.6,.62))),0.),22.)*uSpec*1.4*vec3(1.,.93,.95)*smoothstep(.15,.6,v);
+col*=1.-uVig*smoothstep(.45,1.2,length((uv-vec2(.5,.48))*vec2(as,1.)));
+float edge=dl+fbm(d*4.+uSeed)*.09;
+float m=smoothstep(uB,uB-.10,edge);
+vec3 bg=vec3(.078,.039,.059);
+col=mix(bg,col,m*uAmt);
+col+=mix(c3,c4,.45)*exp(-abs(edge-uB)*22.)*uRing;
+gl_FragColor=vec4(col,1.);}`;
+  const VS = 'attribute vec2 a;void main(){gl_Position=vec4(a,0.,1.);}';
+  const sh = (ty, src) => { const s = gl.createShader(ty); gl.shaderSource(s, src); gl.compileShader(s); if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) throw new Error(gl.getShaderInfoLog(s)); return s; };
+  const p = gl.createProgram(); gl.attachShader(p, sh(gl.VERTEX_SHADER, VS)); gl.attachShader(p, sh(gl.FRAGMENT_SHADER, FS)); gl.linkProgram(p); gl.useProgram(p);
+  const b = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, b); gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
+  const loc = gl.getAttribLocation(p, 'a'); gl.enableVertexAttribArray(loc); gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
+  const U = {}; ['uR', 'uC', 'uT', 'uAmt', 'uB', 'uRing', 'uSw', 'uVein', 'uSpec', 'uVig', 'uSeed', 'c0', 'c1', 'c2', 'c3', 'c4'].forEach(n => U[n] = gl.getUniformLocation(p, n));
+  gl.viewport(0, 0, cv.width, cv.height); gl.uniform2f(U.uR, cv.width, cv.height);
+  return s => {
+    gl.uniform1f(U.uT, s.t); gl.uniform2f(U.uC, s.cx, s.cy); gl.uniform1f(U.uAmt, s.amt); gl.uniform1f(U.uB, s.B); gl.uniform1f(U.uRing, s.ring);
+    gl.uniform1f(U.uSw, s.sw); gl.uniform1f(U.uVein, s.vein); gl.uniform1f(U.uSpec, s.spec); gl.uniform1f(U.uVig, s.vig); gl.uniform1f(U.uSeed, s.seed);
+    for (let i = 0; i < 5; i++) gl.uniform3fv(U['c' + i], s.pal[i]);
+    gl.drawArrays(gl.TRIANGLES, 0, 3);
+  };
+})();
+const hex = h => [1, 3, 5].map(i => parseInt(h.substr(i, 2), 16) / 255);
+const PAL = {
+  ruby:  { pal: ['#140A0F', '#4A1631', '#B8123F', '#EA5174', '#F7D9DF'].map(hex), vein: .22, spec: .42, vig: .32 },
+  shade: { pal: ['#1A0D0B', '#4A2A20', '#9C6448', '#D6A07B', '#F7E3D3'].map(hex), vein: .18, spec: .40, vig: .36 },
+  cheek: { pal: ['#1E0914', '#4A1631', '#A3164A', '#EA5174', '#F7D9DF'].map(hex), vein: .20, spec: .45, vig: .34 },
+  light: { pal: ['#A3264B', '#C4406A', '#DD6A8A', '#EFA0B4', '#F7D9DF'].map(hex), vein: .16, spec: .38, vig: .22 },
+  ink:   { pal: ['#0C0609', '#1E0E16', '#3E1A2C', '#6E3A4E', '#D9B072'].map(hex), vein: .55, spec: .30, vig: .40 },
+  plum:  { pal: ['#1A0712', '#4A1631', '#6E1E48', '#A82C5E', '#E79AB1'].map(hex), vein: .25, spec: .36, vig: .36 },
+};
+/* scene palettes + pigment amount; cross-fades are centred on the cuts */
+const BG = [
+  [0, 'ruby', .95], [2.5, 'ruby', .62], [5, 'shade', .80], [7.5, 'shade', .70], [9, 'cheek', .85], [12, 'light', 1], [16, 'ink', 1], [19, 'plum', .9], [22, 'ruby', .72],
+];
+function bgState(t) {
+  let i = 0; while (i < BG.length - 1 && t >= BG[i + 1][0] - .12) i++;
+  const cur = BG[i], prev = BG[Math.max(0, i - 1)];
+  const k = i === 0 ? 1 : eio(pr(t, cur[0] - .12, cur[0] + .16));
+  const A = PAL[prev[1]], B = PAL[cur[1]];
+  const s = {
+    pal: A.pal.map((c, j) => c.map((v, n) => mix(v, B.pal[j][n], k))),
+    amt: mix(prev[2], cur[2], k), vein: mix(A.vein, B.vein, k), spec: mix(A.spec, B.spec, k), vig: mix(A.vig, B.vig, k),
+    t: t * 1.35 + 14, cx: .5, cy: .5, B: 9, ring: 0, sw: 1.2, seed: 0,
+  };
+  /* scene 1: the drop lands at (540,960) and blooms */
+  const kb = pr(t, .5, 2.1);
+  if (t < 2.3) {
+    s.B = t < .5 ? 0 : mix(.02, 1.9, eo3(kb));
+    s.ring = t < .5 ? 0 : (1 - eo3(kb)) * 1.3;
+    s.sw = t < .5 ? 0 : mix(7, 1.4, eo3(pr(t, .5, 1.9)));
+  }
+  /* each cut gives the liquid a little swirl kick (ties picture to the pulse) */
+  [2.5, 5, 7.5, 9, 12, 14, 16, 19, 22].forEach(c => { const d = t - c; if (d > -.05 && d < 1.2) s.sw += 2.2 * Math.exp(-d * 3.2) * cl((d + .05) * 20); });
+  /* end: fade pigment out */
+  s.amt *= 1 - eio(pr(t, 24.3, 25));
+  return s;
+}
+
+/* =========================================================
+   GRAIN · seeded noise frames (no Math.random)
+   ========================================================= */
+const GR = (() => {
+  const cv = document.getElementById('grain');
+  if (Q.get('gres')) { cv.width = 1080 / +Q.get('gres'); cv.height = 1920 / +Q.get('gres'); }
+  if (Q.get('grain')) cv.style.opacity = Q.get('grain');
+  const g = cv.getContext('2d');
+  const frames = [], R = rng(1337);
+  for (let f = 0; f < 8; f++) {
+    const id = g.createImageData(cv.width, cv.height), d = id.data;
+    for (let i = 0; i < d.length; i += 4) { const v = (R() * 0.7 + R() * 0.3) * 255; d[i] = d[i + 1] = d[i + 2] = v; d[i + 3] = 255; }
+    frames.push(id);
+  }
+  let last = -1;
+  const GFPS = +(Q.get('gfps') || 12);
+  return t => { const f = Math.floor(t * GFPS) % 8; if (f !== last) { g.putImageData(frames[f], 0, 0); last = f; } };
+})();
+
+/* =========================================================
+   CHROME · data-sheet eyebrow (site .eyebrow .num + gold rule)
+   ========================================================= */
+const chrome = (() => {
+  const eb = E('div', 'abs mono eyebrow nowrap', CH); eb.style.left = '72px'; eb.style.top = '236px';
+  const num = E('span', '', eb), bar = E('span', 'bar', eb), lab = E('span', '', eb);
+  const idx = E('div', 'abs mono nowrap', CH); idx.lang = 'en'; idx.style.cssText += 'left:1008px;top:236px;translate:-100% 0;color:rgba(251,246,242,.6)';
+  const SC = [[2.5, 5, 0], [5, 9, 1], [9, 12, 2], [12, 16, 3], [16, 19, 4], [19, 22, 5]];
+  return t => {
+    let cur = null; SC.forEach(s => { if (t >= s[0] - .05 && t < s[1] - .05) cur = s; });
+    if (!cur) { show(eb, 0); show(idx, 0); return; }
+    const o = win(t, cur[0], cur[1], .3, .25);
+    const light = cur[2] === 3;
+    num.textContent = String(cur[2] + 1).padStart(2, '0');
+    lab.textContent = COPY.eb[cur[2]];
+    eb.style.color = light ? '#140A0F' : '#EA5174';
+    idx.textContent = 'Ruby Rose France';
+    idx.style.color = light ? 'rgba(20,10,15,.6)' : 'rgba(251,246,242,.62)';
+    bar.style.transform = 'scaleX(' + eo3(pr(t, cur[0], cur[0] + .5)).toFixed(3) + ')'; bar.style.transformOrigin = '0 50%';
+    T(eb, 0, (1 - eo3(pr(t, cur[0], cur[0] + .4))) * 14, 1, 0, o);
+    T(idx, 0, 0, 1, 0, o);
+  };
+})();
+
+const SCENES = [];
+function scene(a, b, build) { const lay = E('div', 'layer dark', L); const up = build(lay); SCENES.push({ a, b, lay, up }); return lay; }
+
+/* =========================================================
+   1 · 0.0–2.5  drop → bloom → RR monogram → wordmark
+   ========================================================= */
+scene(0, 2.62, lay => {
+  const glow = E('div', 'abs c', lay); glow.style.cssText += 'width:900px;height:900px;border-radius:50%;background:radial-gradient(closest-side,rgba(234,81,116,.55),rgba(184,18,63,.2) 45%,rgba(20,10,15,0))';
+  const drop = E('div', 'abs c', lay); drop.style.cssText += 'width:46px;height:62px;border-radius:50% 50% 50% 50%/62% 62% 40% 40%;background:radial-gradient(circle at 36% 30%,#FBE3E9 0 7%,#EA5174 22%,#B8123F 55%,#4A1631 100%);box-shadow:0 0 30px rgba(234,81,116,.6)';
+  const R1 = rng(7);
+  const drops = Array.from({ length: 9 }, (_, i) => { const d = E('div', 'abs c', lay); const s = 8 + R1() * 12; d.style.cssText += `width:${s}px;height:${s}px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#F7D9DF,#EA5174 40%,#B8123F)`; return { d, a: -Math.PI * (.12 + .76 * (i / 8)) + (R1() - .5) * .2, v: 520 + R1() * 380 }; });
+  const rings = [0, 1, 2].map(() => { const r = E('div', 'abs c', lay); r.style.cssText += 'width:200px;height:200px;border-radius:50%;border:1.5px solid rgba(247,217,223,.7)'; return r; });
+  const shade = E('div', 'abs c', lay); shade.style.cssText += 'width:1300px;height:1500px;border-radius:50%;background:radial-gradient(closest-side,rgba(20,10,15,.62),rgba(20,10,15,.25) 60%,rgba(20,10,15,0))';
+  const grp = E('div', 'abs', lay); grp.style.cssText += 'width:1080px;height:1920px;transform-origin:540px 860px';
+  const NS = 'http://www.w3.org/2000/svg';
+  const svgWrap = E('div', 'abs c', grp); svgWrap.style.cssText += 'width:620px;height:620px';
+  svgWrap.innerHTML = `<svg viewBox="-310 -310 620 620" width="620" height="620" style="overflow:visible">
+    <circle id="ring" r="214" fill="none" stroke="#D9B072" stroke-width="1.6" transform="rotate(-90)"/>
+    <circle id="ring2" r="300" fill="none" stroke="rgba(251,246,242,.22)" stroke-width="1" transform="rotate(90)"/>
+    <g id="bt" font-family="JetBrains Mono" font-weight="500" font-size="21" fill="#F7D9DF" text-anchor="middle"></g>
+    <text id="rr" x="-6" y="96" text-anchor="middle" font-family="Instrument Serif" font-style="italic" font-size="300" letter-spacing="-18" fill="#FBF6F2" fill-opacity="0" stroke="#FBF6F2" stroke-width="2.2" stroke-dasharray="1400" stroke-dashoffset="1400">RR</text>
+  </svg>`;
+  const svg = svgWrap.firstElementChild, ring = svg.querySelector('#ring'), ring2 = svg.querySelector('#ring2'), rr = svg.querySelector('#rr'), bt = svg.querySelector('#bt');
+  /* circular badge (site .hero__badge): one glyph per angle, no textPath */
+  const BCH = [...(COPY.badge + COPY.badge)];
+  BCH.forEach((ch, i) => { const g = document.createElementNS(NS, 'text'); g.textContent = ch; g.setAttribute('transform', 'rotate(' + (i * 360 / BCH.length).toFixed(3) + ') translate(0,-254)'); bt.appendChild(g); });
+  const RL = 2 * Math.PI * 214, RL2 = 2 * Math.PI * 300;
+  ring.setAttribute('stroke-dasharray', RL + ' ' + RL); ring2.setAttribute('stroke-dasharray', RL2 + ' ' + RL2);
+  const logo = img(grp, 'logo-white.svg', 600);
+  const fr = E('div', 'abs c sans-up nowrap', grp, 'France'); fr.style.cssText += 'font-size:34px;color:#F7D9DF';
+  return t => {
+    /* anticipation glow + falling drop */
+    T(glow, 540, 960, mix(.35, 1, eo3(pr(t, 0, .5))) * (1 + .4 * eo3(pr(t, .5, 1.3))), 0, Math.min(.25 + pr(t, 0, .4) * .5, 1 - pr(t, .8, 1.5)));
+    const kf = pr(t, -.12, .5);
+    T(drop, 540, mix(170, 960, ei2(kf)), 1, 0, t < .5 ? 1 : 0);
+    drop.style.scale = '1 ' + (1 + .45 * kf).toFixed(3);
+    drops.forEach(o => { const d = t - .5; if (d < 0 || d > .9) { show(o.d, 0); return; } T(o.d, 540 + Math.cos(o.a) * o.v * d, 960 + Math.sin(o.a) * o.v * d + 900 * d * d, 1 - d, 0, 1 - d / .9); });
+    rings.forEach((r, i) => { const k = pr(t, .5 + i * .12, 1.6 + i * .2); T(r, 540, 960, .1 + eo3(k) * (5.5 + i * 1.5), 0, k > 0 && k < 1 ? (1 - k) * .8 : 0); });
+    show(shade, pr(t, .9, 1.6)); T(shade, 540, 880, 1, 0, pr(t, .9, 1.6) * (1 - pr(t, 2.38, 2.62)));
+    /* monogram */
+    rr.setAttribute('stroke-dashoffset', (1400 * (1 - eio(pr(t, .78, 1.62)))).toFixed(1));
+    rr.setAttribute('fill-opacity', eo3(pr(t, 1.32, 1.8)).toFixed(3));
+    rr.setAttribute('stroke-opacity', (1 - .6 * pr(t, 1.5, 1.9)).toFixed(3));
+    ring.setAttribute('stroke-dashoffset', (RL * (1 - eio(pr(t, .9, 1.7)))).toFixed(1));
+    ring2.setAttribute('stroke-dashoffset', (RL2 * (1 - eio(pr(t, 1.0, 1.9)))).toFixed(1));
+    bt.setAttribute('transform', 'rotate(' + (-40 + t * 14).toFixed(2) + ')'); bt.style.opacity = eo3(pr(t, 1.2, 1.8)).toFixed(3);
+    T(svgWrap, 540, 760, mix(.9, 1, eo5(pr(t, .75, 1.9))), 0, pr(t, .74, .9));
+    /* wordmark: clip wipe + rise */
+    const kl = eo5(pr(t, 1.45, 2.15));
+    logo.style.clipPath = 'inset(-10% ' + ((1 - kl) * 100).toFixed(2) + '% -10% 0)';
+    T(logo, 540, 1126 + (1 - kl) * 26, 1, 0, pr(t, 1.45, 1.6));
+    const kf2 = eo5(pr(t, 1.75, 2.35));
+    fr.style.letterSpacing = mix(1.3, .62, kf2).toFixed(3) + 'em'; fr.style.marginRight = '-.62em';
+    T(fr, 540 + 10, 1236, 1, 0, kf2);
+    /* exit: push through to scene 2 */
+    const ke = ei3(pr(t, 2.36, 2.6));
+    grp.style.transform = 'scale(' + (1 + ke * .14).toFixed(4) + ')'; grp.style.opacity = (1 - ke).toFixed(3); grp.style.filter = ke > 0 ? 'blur(' + (ke * 10).toFixed(2) + 'px)' : 'none';
+  };
+});
+
+/* =========================================================
+   2 · 2.5–5.0  kinetic line · data sheet
+   ========================================================= */
+scene(2.4, 5.12, lay => {
+  const tex = img(lay, 'texture-flatlay-cutout.webp', 380);
+  tex.style.filter = 'drop-shadow(0 30px 40px rgba(6,2,4,.55))';
+  const big = fit(lines(lay, 'serif', COPY.lab, 'font-size:172px;line-height:.9;color:#FBF6F2'), 936);
+  const fig = E('div', 'abs mono nowrap', lay, 'Fig. 01'); fig.style.color = '#D9B072'; fig.lang = 'en';
+  const tag = E('div', 'abs mono nowrap rt', lay, COPY.tag); tag.style.color = '#F7D9DF';
+  const hair = E('div', 'hair', lay); hair.style.cssText += 'left:72px;width:936px;top:1010px;background:rgba(251,246,242,.45)';
+  const dot = E('div', 'dot', lay);
+  const place = fit(lines(lay, 'serif', ['<em style="color:#F7D9DF">' + COPY.place + '</em>'], 'font-size:150px;line-height:1'), 936);
+  const coord = E('div', 'abs mono nowrap', lay, '48°49′N · 2°12′E'); coord.style.color = 'rgba(251,246,242,.7)';
+  const tick = Array.from({ length: 13 }, (_, i) => { const d = E('div', 'hair', lay); d.style.cssText += `left:${72 + i * 78}px;top:${i % 4 === 0 ? 996 : 1002}px;width:1px;height:${i % 4 === 0 ? 14 : 8}px;background:rgba(251,246,242,.5)`; return d; });
+  return t => {
+    const out = 4.7;
+    const kx = eexp(pr(t, 3.0, 3.9)), kxo = ei3(pr(t, out, out + .24));
+    tex.style.clipPath = 'inset(' + ((1 - kx) * 100).toFixed(2) + '% 0 0 0)';
+    T(tex, 826 + (t - 3) * 8, 1450 - (1 - kx) * 60 - (t - 3) * 14 + kxo * 200, 1 + (t - 3) * .02, -4 + (t - 3) * 2.5, (1 - kxo));
+    revealLines(big, t, 2.56, .11, .7, out, .2);
+    T(big, 72, 400 - eo3(pr(t, 2.5, 5)) * 30, 1, 0, 1);
+    const kh = eio(pr(t, 3.25, 4.0));
+    hair.style.transform = 'scaleX(' + kh.toFixed(4) + ')'; show(hair, 1 - pr(t, out, out + .25));
+    T(dot, 72 + 936 * kh, 1010, 1, 0, pr(t, 3.25, 3.35) * (1 - pr(t, out, out + .2)));
+    tick.forEach((d, i) => show(d, pr(t, 3.3 + i * .045, 3.4 + i * .045) * (1 - pr(t, out, out + .2))));
+    const kl = eo3(pr(t, 3.5, 3.95)), ko = ei3(pr(t, out, out + .25));
+    T(fig, 72, 952 + (1 - kl) * 16 - ko * 30, 1, 0, kl * (1 - ko));
+    T(tag, 1008, 952 + (1 - kl) * 16 - ko * 30, 1, 0, kl * (1 - ko));
+    revealLines(place, t, 3.62, .1, .7, out + .04, .2);
+    T(place, 72, 1042, 1, 0, 1);
+    const kc = eo3(pr(t, 4.0, 4.4));
+    T(coord, 72, 1228 + (1 - kc) * 14 - ko * 30, 1, 0, kc * (1 - ko));
+  };
+});
+
+/* =========================================================
+   3a · 5.0–7.5  TEINT · Daily Skin + 33-shade arc + smear
+   ========================================================= */
+const MAN = {};
+scene(4.9, 7.62, lay => {
+  const head = E('div', 'abs nowrap', lay); head.style.cssText += 'display:flex;align-items:baseline;gap:26px';
+  const n = E('span', 'serif', head, '33'); n.style.cssText += 'font-size:300px;line-height:.86;font-style:italic;color:#F7E3D3;font-variant-numeric:lining-nums tabular-nums;letter-spacing:-.04em';
+  const w = E('span', 'serif', head, COPY.teintN); w.style.cssText += 'font-size:150px;line-height:.86;color:#FBF6F2';
+  const sub = fit(E('div', 'abs sans-up nowrap', lay, COPY.daily), 936); sub.style.color = '#F7E3D3';
+  const smear = img(lay, 'classic/daily-skin-m60-s.webp', 1300);
+  const arc = E('div', 'abs', lay);
+  const chips = (window.__MAN['daily-skin']).map((s, i, a) => { const c = E('div', 'chip', arc); c.style.cssText += `width:42px;height:42px;background:${s.hex}`; return c; });
+  const l1 = E('div', 'abs mono nowrap', lay, 'L5'), l2 = E('div', 'abs mono nowrap rt', lay, 'D170');
+  [l1, l2].forEach(x => { x.style.color = '#F7E3D3'; x.style.fontSize = '20px'; });
+  const P = [prod(lay, 'foundation-daily-skin-l20', 700), prod(lay, 'foundation-daily-skin-d150', 700), prod(lay, 'foundation-daily-skin-m60', 790)];
+  const CX = 540, CY = 1270, RA = 452, A0 = 196, A1 = 344;
+  return t => {
+    const out = 7.26, ko = ei3(pr(t, out, out + .22));
+    /* heading */
+    const kh = eo5(pr(t, 5.05, 5.6));
+    T(head, 72, 300 + (1 - kh) * 60 - ko * 40, 1, 0, kh * (1 - ko));
+    n.textContent = String(Math.round(mix(10, 33, eio(pr(t, 5.25, 6.15)))));
+    T(sub, 76, 590 + (1 - eo3(pr(t, 5.3, 5.7))) * 20 - ko * 40, 1, 0, eo3(pr(t, 5.3, 5.7)) * (1 - ko));
+    /* shade arc cascade */
+    chips.forEach((c, i) => {
+      const k = eback(pr(t, 5.25 + i * .028, 5.25 + i * .028 + .42));
+      const a = (A0 + (A1 - A0) * i / 32 + (t - 5) * 2.2) * Math.PI / 180;
+      const r = RA * mix(.55, 1, k) * (1 + ko * .2);
+      T(c, CX + Math.cos(a) * r, CY + Math.sin(a) * r, cl(k, 0, 1.2), 0, cl(k * 3) * (1 - ko));
+    });
+    const kL = pr(t, 5.9, 6.2) * (1 - ko);
+    const a0 = (A0 + (t - 5) * 2.2) * Math.PI / 180, a1 = (A1 + (t - 5) * 2.2) * Math.PI / 180;
+    T(l1, CX + Math.cos(a0) * RA - 14, CY + Math.sin(a0) * RA + 34, 1, 0, kL);
+    T(l2, CX + Math.cos(a1) * RA + 18, CY + Math.sin(a1) * RA + 34, 1, 0, kL);
+    /* smear wipe behind the tubes */
+    const ks = eio(pr(t, 5.5, 6.25));
+    smear.style.clipPath = 'inset(0 ' + ((1 - ks) * 100).toFixed(2) + '% 0 0)';
+    T(smear, 560 + (t - 5) * 12, 1420, 1, -4, (1 - ko));
+    /* tubes slide in with parallax */
+    const k0 = eexp(pr(t, 5.05, 5.85)), k1 = eexp(pr(t, 5.14, 5.94)), k2 = eexp(pr(t, 5.22, 6.02));
+    const dr = (t - 5);
+    T(P[0].el, mix(-260, 318, k0) - dr * 6, 1250 + Math.sin(t * 1.4) * 5 + ko * 300, 1, mix(-18, -7, k0), cl(k0 * 4) * (1 - ko));
+    T(P[1].el, mix(1340, 762, k1) + dr * 6, 1250 + Math.sin(t * 1.4 + 1) * 5 + ko * 300, 1, mix(18, 7, k1), cl(k1 * 4) * (1 - ko));
+    T(P[2].el, 540, mix(2400, 1182, k2) + Math.sin(t * 1.2 + 2) * 4 + ko * 340, 1 + dr * .008, 0, cl(k2 * 4) * (1 - ko));
+    P.forEach((p, i) => p.sweep(pr(t, 6.25 + i * .12, 7.0 + i * .12), .95));
+  };
+});
+
+/* =========================================================
+   3b · 7.5–9.0  Blur Me concealer + Light Filter powder
+   ========================================================= */
+scene(7.4, 9.12, lay => {
+  const tt = fit(lines(lay, 'serif', [COPY.cp], 'font-size:140px;line-height:.95;color:#FBF6F2'), 936);
+  const sub = fit(E('div', 'abs sans-up nowrap', lay, COPY.cpSub), 936); sub.style.color = '#F7E3D3'; sub.lang = 'en';
+  const lf = window.__MAN['light-filter'];
+  const chips = lf.map(s => { const c = E('div', 'chip', lay); c.style.cssText += `width:46px;height:46px;background:${s.hex}`; const l = E('div', 'abs mono nowrap ct', lay, s.name); l.style.cssText += 'font-size:18px;color:rgba(251,246,242,.75)'; return [c, l]; });
+  const pw = prod(lay, 'powder-light-filter-p5', 820, { csh: false });
+  const c1 = prod(lay, 'concealer-blur-me-l35', 760), c2 = prod(lay, 'concealer-blur-me-md100', 680);
+  return t => {
+    const out = 8.76, ko = ei3(pr(t, out, out + .22));
+    revealLines(tt, t, 7.52, .1, .6, out, .2); T(tt, 72, 300, 1, 0, 1);
+    const ks = eo3(pr(t, 7.62, 8.0)); T(sub, 76, 470 + (1 - ks) * 16 - ko * 30, 1, 0, ks * (1 - ko));
+    chips.forEach(([c, l], i) => { const k = eback(pr(t, 7.7 + i * .06, 8.1 + i * .06)); T(c, 96 + i * 104, 580, cl(k, 0, 1.2), 0, cl(k * 3) * (1 - ko)); T(l, 96 + i * 104, 616, 1, 0, cl(k) * (1 - ko)); });
+    const kp = eexp(pr(t, 7.5, 8.25));
+    T(pw.el, 610 + (1 - kp) * 220, 1110 + (1 - kp) * 160 - (t - 7.5) * 10 + ko * 260, mix(.82, 1, kp) + (t - 7.5) * .01, mix(22, 0, kp), cl(kp * 3) * (1 - ko));
+    const ka = eexp(pr(t, 7.62, 8.35)), kb = eexp(pr(t, 7.72, 8.45));
+    T(c1.el, 214, mix(2300, 1200, ka) + ko * 300, 1, mix(-20, -8, ka), cl(ka * 4) * (1 - ko));
+    T(c2.el, 912, mix(2300, 1260, kb) + ko * 300, 1, mix(18, 7, kb), cl(kb * 4) * (1 - ko));
+    pw.sweep(pr(t, 8.05, 8.75), .8); c1.sweep(pr(t, 8.15, 8.8)); c2.sweep(pr(t, 8.25, 8.88));
+  };
+});
+
+/* =========================================================
+   4 · 9.0–12.0  JOUES · Blush On Me + 18-shade ring
+   ========================================================= */
+scene(8.9, 12.12, lay => {
+  const head = E('div', 'abs nowrap', lay); head.style.cssText += 'display:flex;align-items:baseline;gap:26px';
+  const n = E('span', 'serif', head, '18'); n.style.cssText += 'font-size:300px;line-height:.86;font-style:italic;color:#F7D9DF;font-variant-numeric:lining-nums tabular-nums;letter-spacing:-.04em';
+  const w = E('span', 'serif', head, COPY.teintN); w.style.cssText += 'font-size:150px;line-height:.86;color:#FBF6F2';
+  const sub = E('div', 'abs sans-up nowrap', lay, COPY.blushSub); sub.style.color = '#F7D9DF'; sub.lang = 'en';
+  const disc = img(lay, 'classic/blush-on-me-pink-thrill-s.webp', 930);
+  const bl = window.__MAN['blush-on-me'];
+  const chips = bl.map(s => { const c = E('div', 'chip', lay); c.style.cssText += `width:62px;height:62px;background:${s.hex};outline:2px solid rgba(251,246,242,.0)`; return c; });
+  const cp = prod(lay, 'blush-on-me-pink-thrill', 600, { csh: false });
+  const mq = E('div', 'abs mono nowrap', lay); mq.style.cssText += 'font-size:20px;color:rgba(247,217,223,.8);-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 12%,#000 88%,transparent 100%);mask-image:linear-gradient(90deg,transparent 0,#000 12%,#000 88%,transparent 100%);width:936px;overflow:hidden';
+  mq.lang = 'en'; const mqi = E('div', '', mq, (bl.map(s => s.name).join(' · ') + ' · ').repeat(3)); mqi.style.cssText += 'display:inline-block;white-space:nowrap';
+  const tagL = E('div', 'hair gold', lay); const tagT = E('div', 'abs mono nowrap rt', lay, 'Pink Thrill'); tagT.lang = 'en'; tagT.style.cssText += 'font-size:20px;color:#D9B072';
+  const CX = 540, CY = 1086, RR = 444;
+  return t => {
+    const out = 11.76, ko = ei3(pr(t, out, out + .22));
+    const kh = eo5(pr(t, 9.05, 9.6));
+    T(head, 72, 300 + (1 - kh) * 60 - ko * 40, 1, 0, kh * (1 - ko));
+    n.textContent = String(Math.round(mix(2, 18, eio(pr(t, 9.3, 10.2)))));
+    T(sub, 76, 590 + (1 - eo3(pr(t, 9.3, 9.7))) * 20 - ko * 40, 1, 0, eo3(pr(t, 9.3, 9.7)) * (1 - ko));
+    const kd = eio(pr(t, 9.05, 9.7));
+    disc.style.clipPath = 'circle(' + (kd * 50).toFixed(2) + '% at 50% 50%)';
+    T(disc, CX, CY, 1 + ko * .2, (t - 9) * 9, 1 - ko);
+    chips.forEach((c, i) => {
+      const k = eback(pr(t, 9.35 + i * .045, 9.35 + i * .045 + .45));
+      const a = (-90 + i * 20 + (t - 9) * 7) * Math.PI / 180;
+      const r = RR * mix(.7, 1, cl(k)) * (1 + ko * .25);
+      T(c, CX + Math.cos(a) * r, CY + Math.sin(a) * r, cl(k, 0, 1.2), 0, cl(k * 3) * (1 - ko));
+    });
+    const kc = eexp(pr(t, 9.12, 9.95));
+    T(cp.el, CX, CY + (1 - kc) * 120, mix(.5, 1, kc) * (1 + ko * .18) + (t - 9) * .012, mix(-150, 0, kc) + Math.sin(t * 1.3) * 1.5, cl(kc * 3) * (1 - ko));
+    cp.sweep(pr(t, 10.25, 11.0), .85);
+    T(mq, 72, 1572, 1, 0, pr(t, 9.6, 10.0) * (1 - ko)); mqi.style.transform = 'translateX(' + (-(t - 9) * 110).toFixed(1) + 'px)';
+    /* callout */
+    const kt = eio(pr(t, 10.75, 11.15));
+    tagL.style.cssText = tagL.style.cssText.replace(/left:[^;]+;|top:[^;]+;|width:[^;]+;/g, '');
+    tagL.style.left = '742px'; tagL.style.top = '800px'; tagL.style.width = '150px'; tagL.style.transform = 'rotate(-38deg) scaleX(' + kt.toFixed(3) + ')'; show(tagL, kt * (1 - ko));
+    T(tagT, 1008, 682, 1, 0, eo3(pr(t, 11.0, 11.3)) * (1 - ko));
+  };
+});
+
+/* =========================================================
+   5 · 12.0–16.0  LÈVRES · Lumen bar chart + drips → Mood
+   ========================================================= */
+const lipsLay = scene(11.9, 16.12, lay => {
+  const tt = fit(lines(lay, 'serif', [COPY.lips], 'font-size:140px;line-height:.95;color:#140A0F'), 936);
+  const subA = fit(E('div', 'abs sans-up nowrap', lay, COPY.lumenSub), 936), subB = fit(E('div', 'abs sans-up nowrap', lay, COPY.moodSub), 936);
+  [subA, subB].forEach(s => { s.style.color = '#140A0F'; s.style.fontSize = '24px'; });
+  const BASE = 1390;
+  const box = E('div', 'abs', lay); box.style.cssText += `width:1080px;height:${BASE}px;overflow:hidden`;
+  const G = [['clear', 228, '#D98AC8'], ['glorious', 207, '#A8705E'], ['lux', 203, '#BFD8DA'], ['shining', 211, '#8E9298'], ['star', 216, '#2E3A3C']];
+  const CAP = { clear: [2, 440, 187, 315], glorious: [2, 434, 182, 311], lux: [1, 432, 178, 312], shining: [1, 434, 179, 314], star: [2, 443, 185, 315] };
+  const SC = 720 / 760;
+  const shads = G.map(() => { const e = E('div', 'abs c', lay); e.style.cssText += 'width:250px;height:34px;background:radial-gradient(closest-side,rgba(40,6,20,.55),rgba(40,6,20,0))'; return e; });
+  lay.insertBefore(box, null);
+  const tubes = G.map(g => prod(box, 'gloss-lumen-' + g[0], 720, { crop: g[1], csh: false, backing: .55 }));
+  /* the magenta caps (cropped from the wand half of each packshot) close the tubes */
+  const caps = G.map(g => { const c = CAP[g[0]]; const e = E('div', 'abs c prod', box); e.style.cssText += `width:${(c[2] * SC).toFixed(1)}px;height:${(c[3] * SC).toFixed(1)}px;overflow:hidden`;
+    const i = E('img', '', e); i.src = IMG + 'products/gloss-lumen-' + g[0] + '.webp'; IMGS.push(i); i.style.cssText += `position:absolute;max-width:none;width:${(NAT['gloss-lumen-' + g[0]][0] * SC).toFixed(1)}px;height:720px;left:${(-c[0] * SC).toFixed(1)}px;top:${(-c[1] * SC).toFixed(1)}px`;
+    const sw = E('i', 'sheen', e); sw.style.cssText += `left:0;width:100%;height:100%`; return { e, sw, h: c[3] * SC }; });
+  const grid = [0, 1, 2, 3].map(i => { const g = E('div', 'hair', lay); g.style.cssText += `left:72px;width:936px;top:${BASE - 170 * (i + 1)}px;background:rgba(20,10,15,.16)`; return [g, null]; });
+  const base = E('div', 'hair', lay); base.style.cssText += `left:72px;width:936px;top:${BASE}px;background:rgba(20,10,15,.7)`;
+  const labs = G.map(g => { const l = E('div', 'abs mono nowrap ct', lay, g[0]); l.lang = 'en'; l.style.cssText += 'font-size:18px;color:#140A0F'; return l; });
+  const drips = G.map(g => { const s = E('div', 'abs', lay); s.innerHTML = `<svg width="40" height="120" viewBox="-20 0 40 120" style="overflow:visible"><path fill="${g[2]}" stroke="rgba(20,10,15,.25)" stroke-width="1"/><circle r="9" fill="${g[2]}" stroke="rgba(20,10,15,.25)" stroke-width="1"/><ellipse rx="3" ry="5" fill="rgba(255,255,255,.75)"/></svg>`; const sv = s.firstChild; return { s, path: sv.querySelector('path'), c: sv.querySelector('circle'), hl: sv.querySelector('ellipse') }; });
+  const X = [146, 343, 540, 737, 934], TOP = [1000, 915, 830, 745, 660];
+  const M = [prod(lay, 'lipstick-mood-desire', 860), prod(lay, 'lipstick-mood-romance', 860), prod(lay, 'lipstick-mood-wish', 900)];
+  const mlab = ['Desire', 'Romance', 'Wish'].map(n => { const l = E('div', 'abs mono nowrap ct', lay, n); l.lang = 'en'; l.style.cssText += 'font-size:18px;color:#140A0F'; return l; });
+  return t => {
+    const out = 15.76, ko = ei3(pr(t, out, out + .22));
+    revealLines(tt, t, 12.04, .1, .6, out, .2); T(tt, 72, 300, 1, 0, 1);
+    const kA = eo3(pr(t, 12.2, 12.6)) * (1 - pr(t, 13.85, 14.05)), kB = eo3(pr(t, 14.05, 14.4)) * (1 - ko);
+    T(subA, 76, 462 + (1 - eo3(pr(t, 12.2, 12.6))) * 16, 1, 0, kA);
+    T(subB, 76, 462 + (1 - eo3(pr(t, 14.05, 14.4))) * 16, 1, 0, kB);
+    /* gloss bars rising */
+    const kdn = ei3(pr(t, 13.82, 14.12));
+    tubes.forEach((p, i) => {
+      const k = eback(pr(t, 12.12 + i * .09, 12.82 + i * .09));
+      const y = mix(BASE + 380, TOP[i] + 360, k) + kdn * 900 + Math.sin(t * 1.6 + i) * 3;
+      T(p.el, X[i], y, 1, 0, cl(k * 5));
+      /* cap sits on the shoulder; lifts and tilts as the tube "drips" */
+      const tl = 12.92 + i * .13, kl = Math.sin(Math.PI * pr(t, tl - .1, tl + .75));
+      const c = caps[i];
+      T(c.e, X[i] + kl * 10, y - 360 + 205 * SC - c.h / 2 - kl * 46, 1, kl * 7, cl(k * 5));
+      c.sw.style.backgroundPosition = mix(118, -18, pr(t, 13.0 + i * .08, 13.6 + i * .08)).toFixed(2) + '% 0'; c.sw.style.opacity = pr(t, 13.0 + i * .08, 13.6 + i * .08) % 1 > 0 ? .9 : 0;
+      T(shads[i], X[i], BASE, 1, 0, cl(k * 2) * (1 - pr(t, 13.85, 14.05)));
+      p.sweep(pr(t, 13.0 + i * .08, 13.6 + i * .08), .9);
+    });
+    const kb = eio(pr(t, 12.1, 12.7)) * (1 - pr(t, 13.9, 14.1));
+    base.style.transform = 'scaleX(' + eio(pr(t, 12.1, 12.7)).toFixed(4) + ')'; show(base, 1 - pr(t, 13.9, 14.1));
+    grid.forEach(([g, n], i) => { const k = eio(pr(t, 12.15 + i * .07, 12.65 + i * .07)) * (1 - pr(t, 13.85, 14.05)); g.style.transform = 'scaleX(' + eio(pr(t, 12.15 + i * .07, 12.65 + i * .07)).toFixed(4) + ')'; show(g, k > 0 ? 1 - pr(t, 13.85, 14.05) : 0); });
+    labs.forEach((l, i) => T(l, X[i], 1508, 1, 0, eo3(pr(t, 12.5 + i * .06, 12.8 + i * .06)) * (1 - pr(t, 13.85, 14.05))));
+    /* drips hang from the baseline, swell, detach, fall */
+    drips.forEach((d, i) => {
+      const t0 = 12.95 + i * .13, k = pr(t, t0, t0 + .55), kf = pr(t, t0 + .55, t0 + .95);
+      const len = 6 + 46 * eio(k) * (1 - kf);
+      const r = 5 + 6 * eo3(k);
+      const by = len + kf * kf * 70;
+      d.path.setAttribute('d', `M-${(r * 1.5).toFixed(1)} 0 Q-${(r * .9).toFixed(1)} 0 -${(r * .55).toFixed(1)} ${(len * .6).toFixed(1)} L${(r * .55).toFixed(1)} ${(len * .6).toFixed(1)} Q${(r * .9).toFixed(1)} 0 ${(r * 1.5).toFixed(1)} 0Z`);
+      d.c.setAttribute('cy', by.toFixed(1)); d.c.setAttribute('r', r.toFixed(1));
+      d.hl.setAttribute('cx', (-r * .35).toFixed(1)); d.hl.setAttribute('cy', (by - r * .3).toFixed(1));
+      T(d.s, X[i] - 20, BASE, 1, 0, (t > t0 ? 1 : 0) * (1 - pr(t, t0 + .8, t0 + .95)));
+    });
+    /* Mood cross-fade */
+    const P = [[318, 1110, -9], [762, 1110, 9], [540, 1060, 0]];
+    M.forEach((p, i) => {
+      const k = eo3(pr(t, 13.95 + i * .07, 14.55 + i * .07));
+      const bl = (1 - k) * 14;
+      T(p.el, P[i][0] + Math.sin(t * .9 + i) * 4, P[i][1] + (1 - k) * 40 + ko * 200, mix(1.1, 1, k) + (t - 14) * .01, P[i][2], k * (1 - ko));
+      p.el.style.filter = bl > .1 ? `blur(${bl.toFixed(2)}px) drop-shadow(0 30px 34px rgba(74,22,49,.30))` : '';
+      p.sweep(pr(t, 14.75 + i * .14, 15.45 + i * .14), .85);
+    });
+    mlab.forEach((l, i) => T(l, P[i][0], 1578 - (i === 2 ? 0 : 0), 1, 0, eo3(pr(t, 14.6 + i * .08, 14.9 + i * .08)) * (1 - ko)));
+  };
+});
+lipsLay.classList.remove('dark'); lipsLay.classList.add('light');
+
+/* =========================================================
+   6 · 16.0–19.0  YEUX · mascaras fan out like lashes + lash curve
+   ========================================================= */
+scene(15.9, 19.12, lay => {
+  const tt = fit(lines(lay, 'serif', [COPY.eyes, '<em style="color:#D9B072">' + COPY.eyesSub + '</em>'], 'font-size:200px;line-height:.92;color:#FBF6F2'), 936);
+  const PX = 540, PY = 1600, H = 740;
+  const svgW = E('div', 'abs', lay); svgW.style.cssText += 'width:1080px;height:1920px';
+  const RA = 806, A = 46;
+  const arcD = (() => { const a0 = (-90 - A) * Math.PI / 180, a1 = (-90 + A) * Math.PI / 180; return `M${PX + Math.cos(a0) * RA} ${PY + Math.sin(a0) * RA} A${RA} ${RA} 0 0 1 ${PX + Math.cos(a1) * RA} ${PY + Math.sin(a1) * RA}`; })();
+  let lashes = '';
+  const NL = 17;
+  for (let i = 0; i < NL; i++) {
+    const a = (-90 - A + 4 + (2 * A - 8) * i / (NL - 1)) * Math.PI / 180, r0 = RA + 8, r1 = RA + 40 + 14 * Math.sin(Math.PI * i / (NL - 1));
+    const x0 = PX + Math.cos(a) * r0, y0 = PY + Math.sin(a) * r0, x1 = PX + Math.cos(a + .05) * r1, y1 = PY + Math.sin(a + .05) * r1;
+    const mx = PX + Math.cos(a - .02) * (r0 + r1) / 2, my = PY + Math.sin(a - .02) * (r0 + r1) / 2;
+    lashes += `<path class="lash" d="M${x0.toFixed(1)} ${y0.toFixed(1)} Q${mx.toFixed(1)} ${my.toFixed(1)} ${x1.toFixed(1)} ${y1.toFixed(1)}" stroke="#E8C48A" stroke-width="3.4" stroke-linecap="round" fill="none"/>`;
+  }
+  svgW.innerHTML = `<svg width="1080" height="1920" style="overflow:visible"><path id="arc" d="${arcD}" stroke="#E8C48A" stroke-width="3.2" fill="none" stroke-linecap="round"/>${lashes}<circle id="adot" r="7" fill="#F7D9DF"/></svg>`;
+  const arc = svgW.querySelector('#arc'), adot = svgW.querySelector('#adot'), LS = [...svgW.querySelectorAll('.lash')];
+  const AL = arc.getTotalLength(); arc.setAttribute('stroke-dasharray', AL + ' ' + AL);
+  LS.forEach(l => { const n = l.getTotalLength(); l._n = n; l.setAttribute('stroke-dasharray', n + ' ' + n); });
+  const names = ['mascara-tropico-power-volume', 'mascara-epic-lashes', 'mascara-curve-volume', 'mascara-length-definition', 'mascara-feels-stunning', 'mascara-cat-eye'];
+  const ANG = [-40, -24, -8, 8, 24, 40];
+  const M = names.map(n => prod(lay, n, H, { csh: false }));
+  const order = [0, 5, 1, 4, 2, 3]; order.forEach((i, z) => M[i].el.style.zIndex = z);
+  return t => {
+    const out = 18.74, ko = ei3(pr(t, out, out + .22));
+    revealLines(tt, t, 16.04, .14, .62, out, .2); T(tt, 72, 290, 1, 0, 1);
+    const ku = eo5(pr(t, 16.0, 16.55));
+    M.forEach((p, i) => {
+      const k = eexp(pr(t, 16.2 + Math.abs(i - 2.5) * .06, 17.05 + Math.abs(i - 2.5) * .06));
+      const th = (ANG[i] * k + Math.sin(t * 1.1 + i) * .6 * k) * Math.PI / 180;
+      const py = PY + (1 - ku) * 700 + ko * 500;
+      const cx = PX + Math.sin(th) * H / 2, cy = py - Math.cos(th) * H / 2;
+      T(p.el, cx, cy, 1, th * 180 / Math.PI, cl(ku * 3) * (1 - ko));
+      p.sweep(pr(t, 17.55 + i * .07, 18.2 + i * .07), .9);
+    });
+    const ka = eio(pr(t, 16.75, 17.55));
+    arc.setAttribute('stroke-dashoffset', (AL * (1 - ka)).toFixed(1)); arc.style.opacity = 1 - ko;
+    const pt = arc.getPointAtLength(AL * ka); adot.setAttribute('cx', pt.x.toFixed(1)); adot.setAttribute('cy', pt.y.toFixed(1)); adot.style.opacity = (ka > 0 && ka < 1 ? 1 : 0);
+    LS.forEach((l, i) => { const k = eo3(pr(t, 16.95 + i * .045, 17.25 + i * .045)); l.setAttribute('stroke-dashoffset', (l._n * (1 - k)).toFixed(2)); l.style.opacity = 1 - ko; });
+  };
+});
+
+/* =========================================================
+   7 · 19.0–22.0  numbers · odometers over plum pigment
+   ========================================================= */
+scene(18.9, 22.12, lay => {
+  const ROWS = [{ d: '40', u: '' }, { d: '500', u: '' }, { d: '20', u: 'M' }];
+  const R = ROWS.map((r, ri) => {
+    const top = 330 + ri * 400;
+    const hair = E('div', 'hair', lay); hair.style.cssText += `left:72px;width:936px;top:${top}px;background:rgba(217,176,114,.7)`;
+    const idx = E('div', 'abs mono nowrap rt', lay, '0' + (ri + 1)); idx.style.color = '#D9B072';
+    const num = E('div', 'abs serif nowrap', lay); num.style.cssText += 'font-size:250px;line-height:1;color:#FBF6F2;font-variant-numeric:lining-nums tabular-nums;letter-spacing:-.03em;display:flex';
+    const plus = E('span', '', num, '+'); plus.style.cssText += 'font-style:italic;color:#F17C98;margin-right:.04em';
+    const cols = r.d.split('').map(ch => { const o = E('span', 'odo', num); const s = E('i', '', o); s.innerHTML = Array.from({ length: 30 }, (_, j) => '<b>' + (j % 10) + '</b>').join(''); return { s, v: +ch }; });
+    let unit = null; if (r.u) { unit = E('span', '', num, r.u); unit.style.cssText += 'font-style:italic;color:#F17C98;margin-left:.04em'; }
+    const lab = fit(E('div', 'abs sans-up nowrap', lay, COPY.figs[ri]), 936); lab.style.color = '#F7D9DF';
+    return { top, hair, idx, num, cols, lab, unit };
+  });
+  return t => {
+    const out = 21.76, ko = ei3(pr(t, out, out + .22));
+    R.forEach((r, ri) => {
+      const t0 = 19.08 + ri * .42;
+      const kh = eio(pr(t, t0, t0 + .55));
+      r.hair.style.transform = 'scaleX(' + kh.toFixed(4) + ')'; show(r.hair, 1 - ko);
+      T(r.idx, 1008, r.top + 18, 1, 0, eo3(pr(t, t0 + .1, t0 + .4)) * (1 - ko));
+      const kn = eo5(pr(t, t0 + .05, t0 + .5));
+      T(r.num, 66, r.top + 28 + (1 - kn) * 40 - ko * 40, 1, 0, kn * (1 - ko));
+      r.cols.forEach((c, j) => {
+        const k = eo5(pr(t, t0 + .05 + j * .09, t0 + 1.25 + j * .12));
+        const pos = mix(0, 20 + c.v, k);
+        c.s.style.transform = 'translateY(' + (-pos).toFixed(4) + 'em)';
+      });
+      const kl = eo3(pr(t, t0 + .5, t0 + .85));
+      T(r.lab, 76, r.top + 296 + (1 - kl) * 14 - ko * 40, 1, 0, kl * (1 - ko));
+    });
+  };
+});
+
+/* =========================================================
+   8 · 22.0–25.0  end card · constellation + wordmark + claim
+   ========================================================= */
+scene(21.9, 25, lay => {
+  const logo = img(lay, 'logo-white.svg', 520);
+  const fr = E('div', 'abs c sans-up nowrap', lay, 'France'); fr.style.cssText += 'font-size:28px;color:#F7D9DF;letter-spacing:.62em';
+  const claim = fit(lines(lay, 'serif', COPY.claim, 'font-size:112px;line-height:.98;color:#FBF6F2;text-align:center'), 936);
+  const csh = E('div', 'abs c', lay); csh.style.cssText += 'width:880px;height:120px;background:radial-gradient(closest-side,rgba(6,2,4,.6),rgba(6,2,4,0))';
+  /* name, height, x, y, rot, from-angle(deg), z */
+  const C = [
+    ['powder-light-filter-p5', 330, 548, 1130, 0, -90, 1],
+    ['foundation-daily-skin-l20', 470, 352, 1160, -7, 200, 3],
+    ['concealer-blur-me-l35', 410, 222, 1210, -13, 190, 4],
+    ['gloss-lumen-star', 380, 742, 1190, 6, -20, 3],
+    ['lipstick-mood-desire', 450, 868, 1170, 11, 10, 4],
+    ['mascara-curve-volume', 430, 452, 1250, -4, 160, 5],
+    ['blush-on-me-pink-thrill', 250, 618, 1300, 0, 90, 6],
+  ].map((c, i) => { const p = prod(lay, c[0], c[1], { csh: false }); p.el.style.zIndex = c[6]; return { p, x: c[2], y: c[3], r: c[4], a: c[5] * Math.PI / 180, i }; });
+  const hair = E('div', 'hair', lay); hair.style.cssText += 'left:72px;width:936px;top:1468px;background:rgba(251,246,242,.4)';
+  const dot = E('div', 'dot', lay);
+  const url = E('div', 'abs c sans-up nowrap', lay, 'rubyrosefrance.com'); url.style.cssText += 'font-size:36px;letter-spacing:.12em;color:#FBF6F2;text-transform:none';
+  const mail = E('div', 'abs c mono nowrap', lay, 'business@rubyrosefrance.com'); mail.style.cssText += 'font-size:24px;letter-spacing:.08em;text-transform:none;color:#F7D9DF';
+  return t => {
+    C.forEach(c => {
+      const k = eexp(pr(t, 22.0 + c.i * .07, 22.95 + c.i * .07));
+      const d = (1 - k) * 1300;
+      const br = Math.sin(t * 1.1 + c.i * 1.3) * 4;
+      T(c.p.el, c.x + Math.cos(c.a) * d, c.y + Math.sin(c.a) * d + br, 1, c.r + (1 - k) * (c.i % 2 ? 40 : -40), cl(k * 3));
+      c.p.sweep(pr(t, 23.25 + c.i * .06, 23.95 + c.i * .06), .85);
+    });
+    show(csh, eo3(pr(t, 22.4, 23.0))); T(csh, 548, 1418, 1, 0, eo3(pr(t, 22.4, 23.0)));
+    const kl = eo5(pr(t, 22.35, 23.05));
+    logo.style.clipPath = 'inset(-10% ' + ((1 - kl) * 100).toFixed(2) + '% -10% 0)';
+    T(logo, 540, 352 + (1 - kl) * 18, 1, 0, pr(t, 22.35, 22.5));
+    const kf = eo5(pr(t, 22.6, 23.2)); fr.style.letterSpacing = mix(1.2, .62, kf).toFixed(3) + 'em';
+    T(fr, 549, 452, 1, 0, kf);
+    revealLines(claim, t, 22.62, .11, .7);
+    claim.style.width = '936px'; T(claim, 72, 520, 1, 0, 1);
+    const kh = eio(pr(t, 23.0, 23.6));
+    hair.style.transform = 'scaleX(' + kh.toFixed(4) + ')'; hair.style.transformOrigin = '50% 50%'; show(hair, 1);
+    T(dot, 540, 1468, 1 + .3 * Math.sin(t * 4), 0, eo3(pr(t, 23.4, 23.7)));
+    const ku = eo3(pr(t, 23.2, 23.6)); T(url, 540, 1530 + (1 - ku) * 14, 1, 0, ku);
+    const km = eo3(pr(t, 23.35, 23.75)); T(mail, 540, 1584 + (1 - km) * 14, 1, 0, km);
+  };
+});
+
+/* =========================================================
+   seek
+   ========================================================= */
+const fadeEl = document.getElementById('fade');
+window.__seek = t => {
+  t = Math.max(0, Math.min(DUR, t));
+  GL(bgState(t));
+  GR(t);
+  chrome(t);
+  SCENES.forEach(s => { const on = t >= s.a && t <= s.b; s.lay.style.display = on ? 'block' : 'none'; if (on) s.up(t); });
+  fadeEl.style.opacity = eio(pr(t, 24.3, 25)).toFixed(4);
+  return t;
+};
+/* safe-zone audit (text only): returns offending text boxes at the current t */
+window.__check = () => {
+  const bad = [];
+  document.querySelectorAll('.serif,.mono,.sans-up,.li').forEach(el => {
+    let o = 1, n = el; while (n && n !== document.body) { const cs = getComputedStyle(n); if (cs.display === 'none' || cs.visibility === 'hidden') { o = 0; break; } o *= +cs.opacity; n = n.parentElement; }
+    if (o < .25 || !el.textContent.trim()) return;
+    let r = el.getBoundingClientRect(); if (!r.width) return;
+    if (el.classList.contains('li')) { const p = el.parentElement.getBoundingClientRect(); r = { left: Math.max(r.left, p.left), right: Math.min(r.right, p.right), top: Math.max(r.top, p.top), bottom: Math.min(r.bottom, p.bottom) }; if (r.bottom - r.top < 4) return; }
+    if (r.left < 53 || r.right > 1027 || r.top < 219 || r.bottom > 1621) bad.push(el.textContent.trim().slice(0, 30) + ' [' + [r.left, r.top, r.right, r.bottom].map(Math.round).join(',') + ']');
+  });
+  return [...new Set(bad)];
+};
+window.__ready = (async () => {
+  await document.fonts.load('400 100px "Instrument Serif"'); await document.fonts.load('italic 400 100px "Instrument Serif"');
+  await document.fonts.load('600 30px Montserrat'); await document.fonts.load('500 20px "JetBrains Mono"');
+  await document.fonts.ready;
+  await Promise.all(IMGS.map(i => i.decode().catch(() => { })));
+  runFits();
+  window.__seek(0);
+  return true;
+})();
+</script>
+</body>
+</html>
